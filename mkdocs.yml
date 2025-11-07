@@ -1,6 +1,6 @@
 site_name: "" #Fink
 repo_url: https://github.com/astrolabsoftware/fink-broker
-repo_name: lsst-fink-broker
+repo_name: fink-broker
 edit_uri: ""
 
 nav:
