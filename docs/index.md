@@ -2,7 +2,7 @@
 
 
 <div class="center" markdown>
-![Alt text](/img/Fink_PrimaryLogo_WEB.png)
+![Alt text](img/Fink_PrimaryLogo_WEB.png)
 
 </div>
 
