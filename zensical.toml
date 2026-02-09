@@ -1,0 +1,125 @@
+[project.theme]
+variant = "modern"
+features = [
+    "content.code.copy",
+    "content.code.annotate",
+    "search.highlight",
+    "navigation.instant",
+    "navigation.instant.progress",
+    "navigation.tracking",
+    "navigation.path",
+    # "navigation.sections",
+    # "navigation.tabs",
+]
+logo = "img/favicon.ico"
+favicon = "img/favicon.ico"
+
+[project]
+site_name = "Fink/LSST Documentation"
+repo_name = "fink-broker"
+repo_url = "https://github.com/astrolabsoftware/fink-broker"
+copyright = "Copyright &copy; 2018-26 <a href='https://fink-broker.org'>Fink team</a>."
+nav = [
+  { Home = "index.md" },
+  { "Fink in a nutshell" = [
+      { "Science Roadmap" = "broker/roadmap.md" },
+      { "Technological consideration" = "broker/infrastructure.md" },
+      # { "Accessing alert data" = "broker/services_summary.md" }
+    ]},
+  # { "LSST alert data tips" = [
+  #     { "From ZTF to LSST" = "ztf_to_lsst.md" },
+  #     { "Alert data quality" = "" },
+  #     { "Known problems" = "" }
+  #   ]},
+  # { Science = [
+  #     { "Fink science modules" = "broker/science_modules.md" },
+  #     { "Fink filters" = "broker/filters.md" },
+  #     { "Classification" = "broker/classification.md" }
+  #   ]},
+  # { Services = [
+  #     { Overview = "services/search/getting_started.md" },
+  #     { "Science Portal" = "" },
+  #     { "REST API" = [
+  #         { "Cheat Sheet" = "services/search/cheatsheet.md" },
+  #         { "Conesearch" = "services/search/conesearch.md" },
+  #         { "Search by name/ID" = "services/search/objectid.md" },
+  #         { "Search by tag" = "services/search/classsearch.md" },
+  #         { "Image data" = "services/search/imagesearch.md" },
+  #         { Statistics = "services/search/statistics.md" },
+  #         { "Resolving names" = "services/search/resolver.md" },
+  #         { "Columns & classes definition" = "services/search/definitions.md" },
+  #         { Troubleshooting = "services/search/troubleshooting.md" }
+  #       ]},
+  #       { "Livestream" = "" },
+  #       { "Data Transfer" = "" },
+  #       { Xmatch = "" },
+  #   ]},
+  # { "Developer corner" = [
+  #     { "Source code" = "source-code.md" },
+  #     { "Release Notes" = "release-notes.md" },
+  #     { "Contributing" = "contributing.md" },
+  #     { "fink-client" = "" },
+  #     { "Alert schemas" = "developers/schemas.md" },
+  #     { "Designing a science module" = "developers/science_module_tutorial.md" },
+  #     { "Designing a filter" = "developers/filter_tutorial.md" },
+  #     { "Testing Fink" = "developers/testing_fink.md" },
+  #     { "Connecting Fink" = [
+  #         { "Fink-TOM" = "" }
+  #       ]}
+  #   ]},
+  # {"Citing Fink" = ""}
+]
+extra_css = ["assets/stylesheets/extra.css"]
+
+
+[project.extra.status]
+new = "Recently added"
+
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.tables]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.blocks.caption]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" }
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+[project.markdown_extensions.pymdownx.emoji]
+emoji_index = "zensical.extensions.emoji.twemoji"
+emoji_generator = "zensical.extensions.emoji.to_svg"
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.snippets]
+
+# Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+primary = "deep orange"
+
+# Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+primary = "deep blue"
+
+# Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+primary = "deep orange"
+
