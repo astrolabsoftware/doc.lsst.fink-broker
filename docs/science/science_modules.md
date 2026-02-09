@@ -1,6 +1,6 @@
 # Fink science modules
 
-## What is a Science Module
+## What is a Science Module?
 
 The alert stream is made of millions sources that vary in the field of view of the telescope. This encompasses a wide variety of phenomemon, for which no single individual possesses all knowledge. Our strategy in Fink is to bring diverse scientific expertise together to create a platform where collective intelligence can thrive. By facilitating collaboration among experts across various scientific fields, we create an ecosystem where knowledge is not only shared but also amplified: one person's trash is another person's treasure.
 
