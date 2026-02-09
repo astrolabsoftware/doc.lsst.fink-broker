@@ -31,11 +31,11 @@ nav = [
       { "Alert data quality" = "data/quality.md" },
       { "Known issues" = "data/issues.md" }
     ]},
-  # { Science = [
-  #     { "Fink science modules" = "broker/science_modules.md" },
-  #     { "Fink filters" = "broker/filters.md" },
-  #     { "Classification" = "broker/classification.md" }
-  #   ]},
+  { Science = [
+      { "Fink science modules" = "science/science_modules.md" },
+      { "Fink filters" = "science/filters.md" },
+      { "Classification" = "science/classification.md" }
+    ]},
   # { Services = [
   #     { Overview = "services/search/getting_started.md" },
   #     { "Science Portal" = "" },
