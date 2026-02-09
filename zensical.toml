@@ -26,11 +26,11 @@ nav = [
       { "Technological consideration" = "broker/infrastructure.md" },
       # { "Accessing alert data" = "broker/services_summary.md" }
     ]},
-  # { "LSST alert data tips" = [
-  #     { "From ZTF to LSST" = "ztf_to_lsst.md" },
-  #     { "Alert data quality" = "" },
-  #     { "Known problems" = "" }
-  #   ]},
+  { "LSST alert data tips" = [
+      { "From ZTF to LSST" = "data/ztf_to_lsst.md" },
+      { "Alert data quality" = "data/quality.md" },
+      { "Known issues" = "data/issues.md" }
+    ]},
   # { Science = [
   #     { "Fink science modules" = "broker/science_modules.md" },
   #     { "Fink filters" = "broker/filters.md" },
@@ -90,6 +90,9 @@ custom_fences = [
 ]
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
+[project.markdown_extensions.pymdownx.tabbed.slugify]
+object = "pymdownx.slugs.slugify"
+kwds = { case = "lower" }
 [project.markdown_extensions.pymdownx.emoji]
 emoji_index = "zensical.extensions.emoji.twemoji"
 emoji_generator = "zensical.extensions.emoji.to_svg"
