@@ -7,7 +7,7 @@ Every time a new alert is emitted, a new `diaSource` is created. LSST makes an a
 
 ## Alert data
 
-You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467), or provisonal designation (e.g. 2003 UT84, K03U84T) of asteroids. Under the hood, we resolve the name using the [quaero](https://ssp.imcce.fr/webservices/ssodnet/api/quaero/) service from SsODNet. You can also search for comets (although none has been seen yet by Rubin in the alert stream), but note that we have far less comets than asteroids.
+You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467), or provisonal designation (e.g. 2003 UT84, K03U84T) of asteroids. Under the hood, we resolve the name using the [quaero :lucide-external-link:](https://ssp.imcce.fr/webservices/ssodnet/api/quaero/){target="blank_"} service from SsODNet. You can also search for comets (although none has been seen yet by Rubin in the alert stream), but note that we have far less comets than asteroids.
 
 === "Python"
 
@@ -208,7 +208,7 @@ if r.status_code == 200:
 
 ## Adding ephemerides from Miriade
 
-You can also attach the ephemerides provided by the [Miriade ephemeride service](https://ssp.imcce.fr/webservices/miriade/api/ephemcc/):
+You can also attach the ephemerides provided by the [Miriade ephemeride service :lucide-external-link:](https://ssp.imcce.fr/webservices/miriade/api/ephemcc/){target="blank_"}:
 
 ```python title="Adding ephemerides"
 import io

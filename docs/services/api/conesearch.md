@@ -94,46 +94,47 @@ Instead of `window`, you can also use `stopdate`.
 !!! warning "Time boundaries and first detection"
     When specifying time boundaries, you will restrict the search to alerts whose first detection was within the specified range of dates (and not all transients seen during this period).
 
+## Retrieving full object data
+
 Note that we group information and only display the data from the last alert. Hence, if you need lightcurves, that is to query all the _sources_ data for the `diaObjectId` found with a conesearch, you would do it in two steps:
 
-=== "Python"
 
-    ```python
-    import io
-    import requests
-    import pandas as pd
+```python title="Retrieve full lightcurve for objects found in conesearch"
+import io
+import requests
+import pandas as pd
 
-    # Get the diaObjectId for the alert(s) within a circle on the sky
-    r0 = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/conesearch",
-      json={
-        "ra": "7.4550",
-        "dec": "-44.635",
-        "radius": "5",
-        "columns": "r:diaObjectId,r:midpointMjdTai"
-      }
-    )
+# Get the diaObjectId for the alert(s) within a circle on the sky
+r0 = requests.post(
+  "https://api.lsst.fink-portal.org/api/v1/conesearch",
+  json={
+    "ra": "7.4550",
+    "dec": "-44.635",
+    "radius": "5",
+    "columns": "r:diaObjectId,r:midpointMjdTai"
+  }
+)
 
-    mylist = [val["r:diaObjectId"] for val in r0.json()]
-    # len(mylist) = 26
+mylist = [val["r:diaObjectId"] for val in r0.json()]
+# len(mylist) = 26
 
-    # get full lightcurves for all these alerts
-    r1 = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": ",".join(mylist),
-        "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "json"
-      }
-    )
+# get full lightcurves for all these alerts
+r1 = requests.post(
+  "https://api.lsst.fink-portal.org/api/v1/sources",
+  json={
+    "diaObjectId": ",".join(mylist),
+    "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+    "output-format": "json"
+  }
+)
 
-    # Format output in a DataFrame
-    pdf = pd.read_json(io.BytesIO(r1.content))
-    # len(pdf) = 34
+# Format output in a DataFrame
+pdf = pd.read_json(io.BytesIO(r1.content))
+# len(pdf) = 34
 
-    # group by diaObjectId
-    pdf.groupby("r:diaObjectId").value_counts()
-    ```
+# group by diaObjectId
+pdf.groupby("r:diaObjectId").value_counts()
+```
 
 ## Crossmatch with catalogs
 
