@@ -114,3 +114,7 @@ pdf = pd.read_json(io.BytesIO(r.content))
 ```
 
 Beware of the fact that `/api/v1/objects` had another meaning for ZTF (see above).
+
+### Resolver
+
+The argument `name` for the endpoint `/api/v1/resolver` for ZTF is named `name_or_id` for LSST.
