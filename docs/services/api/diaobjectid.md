@@ -52,7 +52,7 @@ Alerts emitted by the same astronomical object share the same `diaObjectId` iden
 
 === "Query URL"
 
-    Paste this query on your browser to see results:
+    Paste this query on your browser to inspect the results:
     ```
     https://lsst.fink-portal.org/169830579938263176
     ```
@@ -73,7 +73,7 @@ You can also retrieve the data for several objects at once:
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "objectId": ",".join(mylist),
+        "diaObjectId": ",".join(mylist),
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "json"
       }
@@ -180,7 +180,6 @@ The endpoint `/api/v1/objects` give access to summary information about an objec
 === "Python"
 
     ```python
-    import io
     import requests
 
     # get summary data for 169830579938263176
