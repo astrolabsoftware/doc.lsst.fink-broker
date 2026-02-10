@@ -53,6 +53,13 @@ Try this on a terminal:
     wget "https://api.lsst.fink-portal.org/api/v1/conesearch?ra=8.986275&dec=-42.709834&radius=5&output-format=json" -O conesearch.json
     ```
 
+=== "Query URL"
+
+    Paste this query on your browser to see results:
+    ```
+    https://lsst.fink-portal.org/?action=conesearch&ra=8.986275&dec=-42.709834&radius=5
+    ```
+
 Note that in case of several objects matching, the results will be sorted according to the column
 `v:separation_degree`, which is the angular separation in degree between the input (ra, dec) and the objects found. In addition, you can specify time boundaries:
 
