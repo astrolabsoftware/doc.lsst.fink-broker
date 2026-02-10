@@ -12,13 +12,15 @@ In the case of LSST, the databases are updated in real-time, allowing users to a
 
 In ZTF, all alerts would follow the same schema. We would then apply a number of cuts to separate alerts associated to moving objects (e.g. Solar System objects - SSO - or space debris) from alerts associated to static objects on the sky (stars, galaxies, etc. things considered static given the timescale).
 
-In LSST, things are different. LSST makes an association (1'' matching radius) with a catalog of known SOlar system objects from the MPC prior to sending alerts. As a consequence, the alert content changes based on the provenance:
+In LSST, things are different. LSST makes an association (1'' matching radius) with a catalog of known Solar system objects from the MPC prior to sending alerts. As a consequence, the alert content changes based on the provenance:
 
 - if the alert is not associated to a know SSO, it will have the field `diaObject` populated.
 - if the alert is associated to a know SSO, it will have the fields `mpc_orbit` and `ssSource` populated.
 - if the alert is closed to a know SSO and a static object, it will have the fields `diaObject`, `mpc_orbit` and `ssSource` populated.
 
-This means in practice not all fields are available in all alerts.
+!!! info "Content depends on the association"
+    This means in practice not all LSST fields are available in all alerts.
+
 
 ## Solar system object ranking in crowded fields
 
