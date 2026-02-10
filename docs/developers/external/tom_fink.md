@@ -8,7 +8,7 @@ We developed a module for the TOM Toolkit, [tom_fink :lucide-external-link:](htt
 
 You can easily install the module using pip:
 
-```
+```bash
 pip install tom-fink
 ```
 

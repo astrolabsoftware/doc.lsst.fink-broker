@@ -167,23 +167,6 @@ Note that you can also choose different output format:
     vt = votable.parse(io.BytesIO(r.content))
     ```
 
-!!! tip "Optimisation: selecting only a subset of fields"
-    If `columns` is not specified, we transfer all available data fields (original LSST fields and Fink science module outputs). But you can also choose to transfer only a subset of the fields:
-
-
-    ```python title="Select fields"
-    # select only time, flux, position
-    r = requests.post(
-        "https://api.lsst.fink-portal.org/api/v1/sso",
-        json={
-            "n_or_d": "8467",
-            "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
-        }
-    )
-    ```
-
-    Note that the fields should be comma-separated. Unknown field names are ignored.
-
 ## Object data
 
 The endpoint `TBD` give access to summary information about an object, such as the orbital parameters, the number of alerts for the object, number of oppositions, etc. You would simply use:
@@ -208,6 +191,9 @@ if r.status_code == 200:
 
 ## Adding ephemerides from Miriade
 
+!!! warning "Limitations"
+    Beware it adds few seconds delay per API call and color ephemerides are returned only for asteroids
+
 You can also attach the ephemerides provided by the [Miriade ephemeride service :lucide-external-link:](https://ssp.imcce.fr/webservices/miriade/api/ephemcc/){target="blank_"}:
 
 ```python title="Adding ephemerides"
@@ -230,6 +216,3 @@ pdf = pd.read_json(io.BytesIO(r.content))
 ```
 
 Where columns not prefixed by `r:` or `f:` are fields returned from Miriade.
-
-!!! warning "Limitations"
-    Beware it adds few seconds delay per API call and color ephemerides are returned only for asteroids
