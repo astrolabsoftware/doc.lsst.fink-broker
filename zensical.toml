@@ -24,37 +24,42 @@ nav = [
   { "Fink in a nutshell" = [
       { "Science Roadmap" = "broker/roadmap.md" },
       { "Technological consideration" = "broker/infrastructure.md" },
-      # { "Accessing alert data" = "broker/services_summary.md" }
     ]},
   { "LSST alert data tips" = [
       { "From ZTF to LSST" = "data/ztf_to_lsst.md" },
       { "Alert data quality" = "data/quality.md" },
-      { "Known issues" = "data/issues.md" }
+      #{ "Known issues" = "data/issues.md" }
     ]},
   { Science = [
       { "Fink science modules" = "science/science_modules.md" },
       { "Fink filters" = "science/filters.md" },
       { "Classification" = "science/classification.md" }
     ]},
-  # { Services = [
-  #     { Overview = "services/search/getting_started.md" },
-  #     { "Science Portal" = "" },
-  #     { "REST API" = [
-  #         { "Cheat Sheet" = "services/search/cheatsheet.md" },
-  #         { "Conesearch" = "services/search/conesearch.md" },
-  #         { "Search by name/ID" = "services/search/objectid.md" },
-  #         { "Search by tag" = "services/search/classsearch.md" },
-  #         { "Image data" = "services/search/imagesearch.md" },
-  #         { Statistics = "services/search/statistics.md" },
-  #         { "Resolving names" = "services/search/resolver.md" },
-  #         { "Columns & classes definition" = "services/search/definitions.md" },
-  #         { Troubleshooting = "services/search/troubleshooting.md" }
-  #       ]},
-  #       { "Livestream" = "" },
-  #       { "Data Transfer" = "" },
-  #       { Xmatch = "" },
-  #   ]},
-  # { "Developer corner" = [
+  { Services = [
+      { Overview = "services/summary.md" },
+      # { "Science Portal" = [
+      #     {"Search" = ""},
+      #     {"Static objects" = ""},
+      #     {"Solar System objects" = ""},
+      # ]},
+      { "REST API" = [
+          { "Cheat Sheet" = "services/api/cheatsheet.md" },
+          { "Conesearch" = "services/api/conesearch.md" },
+          { "Search by diaObjectId" = "services/api/diaobjectid.md" },
+          { "Search by Solar System object name" = "services/api/solar_system.md" },
+          { "Search by tag" = "services/api/tagsearch.md" },
+          { "Resolving astronomical names" = "services/api/resolver.md" },
+          { "Image data" = "services/api/imagesearch.md" },
+          { "Statistics" = "services/api/statistics.md" },
+          # { "Columns, blocks and tags definition" = "services/api/definitions.md" },
+          # { "Tips" = "services/api/tips.md" },
+          # { "Troubleshooting" = "services/api/troubleshooting.md" }
+        ]},
+        # { "Livestream" = "" },
+        # { "Data Transfer" = "" },
+        # { Xmatch = "" },
+    ]},
+  { "Developer corner" = [
   #     { "Source code" = "source-code.md" },
   #     { "Release Notes" = "release-notes.md" },
   #     { "Contributing" = "contributing.md" },
@@ -63,10 +68,10 @@ nav = [
   #     { "Designing a science module" = "developers/science_module_tutorial.md" },
   #     { "Designing a filter" = "developers/filter_tutorial.md" },
   #     { "Testing Fink" = "developers/testing_fink.md" },
-  #     { "Connecting Fink" = [
-  #         { "Fink-TOM" = "" }
-  #       ]}
-  #   ]},
+      { "Connecting Fink" = [
+          { "Fink-TOM" = "developers/external/tom_fink.md" }
+        ]}
+    ]},
   # {"Citing Fink" = ""}
 ]
 extra_css = ["assets/stylesheets/extra.css"]
@@ -102,6 +107,7 @@ line_spans = "__span"
 pygments_lang_class = true
 [project.markdown_extensions.pymdownx.inlinehilite]
 [project.markdown_extensions.pymdownx.snippets]
+
 
 # Palette toggle for automatic mode
 [[project.theme.palette]]
