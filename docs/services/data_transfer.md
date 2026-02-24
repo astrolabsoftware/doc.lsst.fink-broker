@@ -183,11 +183,11 @@ More details on the expected performances are given in this [post :lucide-extern
 
 ![1](../img/datatransfer_archi.png)
 
-_(1) the user connects to the service and request a transfer by filling fields and hitting the submit button. (2) Dash callbacks build and upload the execution script to HDFS, and submit a job in the Fink [Apache Spark :lucide-external-link:](https://spark.apache.org/) cluster using the [Livy :lucide-external-link:](https://livy.apache.org/) service. (3) Necessary data is loaded from the distributed storage system containing Fink data and processed by the Spark cluster. (4) The resulting alerts are published to the Fink [Apache Kafka :lucide-external-link:](https://kafka.apache.org/) cluster, and they are available up to 7 days by the user. (5) The user can retrieve the data using e.g. the Fink client, or any Kafka-based tool._
+_(1) the user connects to the service and request a transfer by filling fields and hitting the submit button. (2) Dash callbacks build and upload the execution script to HDFS, and submit a job in the Fink [Apache Spark :lucide-external-link:](https://spark.apache.org/){target="blank\_"} cluster using the [Livy :lucide-external-link:](https://livy.apache.org/){target="blank\_"} service. (3) Necessary data is loaded from the distributed storage system containing Fink data and processed by the Spark cluster. (4) The resulting alerts are published to the Fink [Apache Kafka :lucide-external-link:](https://kafka.apache.org/){target="blank\_"} cluster, and they are available up to 7 days by the user. (5) The user can retrieve the data using e.g. the Fink client, or any Kafka-based tool._
 
 ## Troubleshooting
 
-In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client).
+In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}.
 
 ### Timeout error
 
