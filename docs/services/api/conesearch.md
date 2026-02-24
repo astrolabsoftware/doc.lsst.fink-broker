@@ -108,15 +108,15 @@ import pandas as pd
 r0 = requests.post(
   "https://api.lsst.fink-portal.org/api/v1/conesearch",
   json={
-    "ra": "7.4550",
-    "dec": "-44.635",
-    "radius": 60,
+    "ra": "61.9648",
+    "dec": "-48.713",
+    "radius": "10",
     "columns": "r:diaObjectId,r:midpointMjdTai"
   }
 )
 
-mylist = [str(val["r:diaObjectId"]) for val in r0.json()]
-# len(mylist) = 6
+mylist = [val["r:diaObjectId"] for val in r0.json()]
+# len(mylist) = 2
 
 # get full lightcurves for all these alerts
 r1 = requests.post(
@@ -130,7 +130,7 @@ r1 = requests.post(
 
 # Format output in a DataFrame
 pdf = pd.read_json(io.BytesIO(r1.content))
-# len(pdf) = 8
+# len(pdf) = 371
 
 # group by diaObjectId
 pdf.groupby("r:diaObjectId").value_counts()
@@ -159,4 +159,4 @@ You can easily perform a crossmatch with a catalog of astronomical sources by lo
       # do whatever
     ```
 
-But note that for 10,000+ sources, this can be pretty slow, and impact other users. Instead for large catalogs, prefer the [Xmatch service](../../services/xmatch.md).
+But note that for 10,000+ sources, this can be pretty slow, and impact other users. Instead for large catalogs, prefer the Xmatch service will be made available shortly.
