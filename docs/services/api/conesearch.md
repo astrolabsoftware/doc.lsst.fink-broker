@@ -159,4 +159,4 @@ You can easily perform a crossmatch with a catalog of astronomical sources by lo
       # do whatever
     ```
 
-But note that for 10,000+ sources, this can be pretty slow, and impact other users. Instead for large catalogs, prefer the [Xmatch service](../../services/xmatch.md).
+But note that for 10,000+ sources, this can be pretty slow, and impact other users. Instead for large catalogs, prefer the Xmatch service will be made available shortly.
