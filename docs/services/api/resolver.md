@@ -74,7 +74,7 @@ r = requests.post(
   json={
     'resolver': 'tns',
     'reverse': True,
-    'name_or_id': '169865760522371491'
+    'name_or_id': '313888627082919999'
   }
 )
 
@@ -159,7 +159,7 @@ r = requests.post(
   json={
     'resolver': 'simbad',
     'reverse': True,
-    'name_or_id': '169773438939431059'
+    'name_or_id': '313972183328621131'
   }
 )
 pdf = pd.read_json(io.BytesIO(r.content))
@@ -176,27 +176,17 @@ import io
 import requests
 import pandas as pd
 
-# get LSST IDs for provisional designation 2003 UT84
+# get LSST IDs for provisional designation 2015 BC557
 r = requests.post(
   "https://api.lsst.fink-portal.org/api/v1/sso",
   json={
-    "n_or_d": "2003 UT84",
+    "n_or_d": "2015 BC557",
     "columns": "r:diaSourceId,r:ssObjectId",
     "output-format": "json"
   }
 )
 
-pdf = pd.read_json(io.BytesIO(r.content)) # (1)!
-```
-
-1. Output:
-```bash
-         r:diaSourceId r:packed_primary_provisional_designation       r:ssObjectId f:sso_name
-0   169892191587532827                                  K03U84T  21163620284511316  2003 UT84
-1   169777833548185633                                  K03U84T  21163620284511316  2003 UT84
-2   169848217053167670                                  K03U84T  21163620284511316  2003 UT84
-...
-# etc
+pdf = pd.read_json(io.BytesIO(r.content))
 ```
 
 ### LSST to SSO
@@ -213,7 +203,7 @@ r = requests.post(
   json={
     'resolver': 'ssodnet',
     'reverse': True,
-    'name_or_id': '21163620284511316'
+    'name_or_id': '21164728071239491'
   }
 )
 
@@ -225,5 +215,5 @@ if r.json() != []:
 Leading to:
 
 ```
-Asteroid counterpart found with designation 2003 UT84
+Asteroid counterpart found with designation 2015 BC557
 ```
