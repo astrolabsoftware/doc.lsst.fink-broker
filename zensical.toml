@@ -57,7 +57,7 @@ nav = [
           { "Troubleshooting" = "services/api/troubleshooting.md" }
         ]},
         # { "Livestream" = "" },
-        # { "Data Transfer" = "" },
+        { "Data Transfer" = "services/data_transfer.md" },
         # { Xmatch = "" },
     ]},
   { "Developer corner" = [
