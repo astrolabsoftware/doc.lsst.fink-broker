@@ -110,13 +110,13 @@ r0 = requests.post(
   json={
     "ra": "7.4550",
     "dec": "-44.635",
-    "radius": "5",
+    "radius": 60,
     "columns": "r:diaObjectId,r:midpointMjdTai"
   }
 )
 
-mylist = [val["r:diaObjectId"] for val in r0.json()]
-# len(mylist) = 26
+mylist = [str(val["r:diaObjectId"]) for val in r0.json()]
+# len(mylist) = 6
 
 # get full lightcurves for all these alerts
 r1 = requests.post(
@@ -130,7 +130,7 @@ r1 = requests.post(
 
 # Format output in a DataFrame
 pdf = pd.read_json(io.BytesIO(r1.content))
-# len(pdf) = 34
+# len(pdf) = 8
 
 # group by diaObjectId
 pdf.groupby("r:diaObjectId").value_counts()
