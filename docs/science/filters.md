@@ -27,7 +27,7 @@ Check out the [tutorial](../developers/filter_tutorial.md) to construct a Fink F
 
 ### Kafka streams
 
-As we process alerts, interesting alerts are automatically picked up by filters and [Apache Kafka :lucide-external-link:](https://kafka.apache.org/){target="blank_"} queues are populated. Each stream from a particular filter is identified by a topic name. This stream can be accessed outside via its topic, and several users can poll the data independently from the same topic. All topics can be accessed using the [Fink client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}, which is a wrapper around Kafka consumer functionalities (see [Livestream documentation](https://doc.lsst.fink-broker.org/en/latest/services/livestream)).
+As we process alerts, interesting alerts are automatically picked up by filters and [Apache Kafka :lucide-external-link:](https://kafka.apache.org/){target="blank_"} queues are populated. Each stream from a particular filter is identified by a topic name. This stream can be accessed outside via its topic, and several users can poll the data independently from the same topic. All topics can be accessed using the [Fink client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}, which is a wrapper around Kafka consumer functionalities (see [Livestream documentation](https://doc.lsst.fink-broker.org/services/livestream)).
 
 ### REST API & Science Portal
 

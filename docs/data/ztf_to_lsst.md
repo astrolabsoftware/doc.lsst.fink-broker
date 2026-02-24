@@ -34,7 +34,7 @@ In LSST, webpages are indexed by both the static identifier (`diaObjectId`) and 
 
 ## Alert classification
 
-In ZTF, users had the ability to create filters that combined multiple alert fields, enabling them to generate meaningful tags tailored to their research needs. These tags were then used to propose a [single alert classification label :lucide-external-link:](https://doc.ztf.fink-broker.org/en/latest/broker/classification/){label="blank_"}. However, this method had three limitations:
+In ZTF, users had the ability to create filters that combined multiple alert fields, enabling them to generate meaningful tags tailored to their research needs. These tags were then used to propose a [single alert classification label :lucide-external-link:](https://doc.ztf.fink-broker.org/science/classification/){label="blank_"}. However, this method had three limitations:
 
 1. **Inconsistent labeling between Livestream and API**: Not all tags were utilized in creating the final (single) classification label.
 2. **Limited classification per alert**: Each alert could have only one classification label, making it impossible to represent different perspectives.
