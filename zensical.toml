@@ -28,7 +28,7 @@ nav = [
   { "LSST alert data tips" = [
       { "From ZTF to LSST" = "data/ztf_to_lsst.md" },
       { "Alert data quality" = "data/quality.md" },
-      #{ "Known issues" = "data/issues.md" }
+      { "Known issues" = "data/issues.md" }
     ]},
   { Science = [
       { "Fink science modules" = "science/science_modules.md" },
@@ -42,19 +42,20 @@ nav = [
       #     {"Static objects" = ""},
       #     {"Solar System objects" = ""},
       # ]},
-      # { "REST API" = [
-      #     { "Cheat Sheet" = "services/api/cheatsheet.md" },
-      #     { "Conesearch" = "services/api/conesearch.md" },
-      #     { "Search by diaObjectId" = "services/api/diaobjectid.md" },
-      #     { "Search by Solar System object name" = "services/api/solar_system.md" },
-      #     { "Search by tag" = "services/api/tagsearch.md" },
-      #     { "Resolving astronomical names" = "services/api/resolver.md" },
-      #     { "Image data" = "services/api/imagesearch.md" },
-      #     { "Statistics" = "services/api/statistics.md" },
-      #     # { "Columns, blocks and tags definition" = "services/api/definitions.md" },
-      #     # { "Tips" = "services/api/tips.md" },
-      #     # { "Troubleshooting" = "services/api/troubleshooting.md" }
-      #   ]},
+      { "REST API" = [
+          # { "Cheat Sheet" = "services/api/cheatsheet.md" },
+          { "Conesearch" = "services/api/conesearch.md" },
+          { "Search by diaObjectId" = "services/api/diaobjectid.md" },
+          { "Search by Solar System object name" = "services/api/solar_system.md" },
+          { "Search by tag" = "services/api/tagsearch.md" },
+          { "Resolving astronomical names" = "services/api/resolver.md" },
+          { "Forced photometry" = "services/api/forced_photometry.md" },
+          { "Image data" = "services/api/imagesearch.md" },
+          { "Statistics" = "services/api/statistics.md" },
+          { "Columns, blocks and tags definition" = "services/api/definitions.md" },
+          { "Tips" = "services/api/tips.md" },
+          { "Troubleshooting" = "services/api/troubleshooting.md" }
+        ]},
         # { "Livestream" = "" },
         # { "Data Transfer" = "" },
         # { Xmatch = "" },
