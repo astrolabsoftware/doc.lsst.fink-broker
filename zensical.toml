@@ -62,16 +62,16 @@ nav = [
     ]},
   { "Developer corner" = [
       { "Source code" = "source-code.md" },
-  #     { "Release Notes" = "release-notes.md" },
+      { "Release Notes" = "release-notes.md" },
       { "Contributing" = "contributing.md" },
   #     { "fink-client" = "" },
   #     { "Alert schemas" = "developers/schemas.md" },
-  #     { "Designing a science module" = "developers/science_module_tutorial.md" },
+      { "Designing a science module" = "developers/science_module_tutorial.md" },
   #     { "Designing a filter" = "developers/filter_tutorial.md" },
   #     { "Testing Fink" = "developers/testing_fink.md" },
-      { "Connecting Fink" = [
-          { "Fink-TOM" = "developers/external/tom_fink.md" }
-        ]}
+      # { "Connecting Fink" = [
+      #     { "Fink-TOM" = "developers/external/tom_fink.md" }
+      #   ]}
     ]},
   # {"Citing Fink" = ""}
 ]
