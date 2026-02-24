@@ -19,6 +19,10 @@ Note that if the filters reduce the size of the stream, they do not filter the c
 
 Some set of conditions are common to many scientists: alerts away from the galaxy, with or without a counterpart with some catalogs, etc... Therefore we provide common blocks, the Fink blocks, to ease the construction of filters. Their code can be found in the [fink-filters :lucide-external-link:](https://github.com/astrolabsoftware/fink-filters/blob/master/fink_filters/rubin/blocks.py){target="blank_"} code repository, and they are also exposed in the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}.
 
+## Designing a Fink Filter
+
+Check out the [tutorial](../developers/filter_tutorial.md) to construct a Fink Filter.
+
 ## Retrieving data from filters
 
 ### Kafka streams
@@ -32,7 +36,9 @@ As we process alerts, interesting alerts are automatically picked up by filters 
 
 ### Fink bots
 
-In addition, for some filters, we redirect the data to instant messaging services such as Telegram or Slack (just ask for it if you need other platforms!). Below we summarise the widely used Fink topics, with their availability on Slack and Telegram (for Telegram, you can directly subscribe using the link or the QR code below).
+In addition, for some filters, we redirect the data to instant messaging services such as Telegram or Slack. A tutorial will be available shortly.
+
+<!-- Below we summarise the widely used Fink topics, with their availability on Slack and Telegram (for Telegram, you can directly subscribe using the link or the QR code below). -->
 
 <!-- ## Available topics
 
