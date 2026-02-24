@@ -56,7 +56,7 @@ nav = [
           { "Tips" = "services/api/tips.md" },
           { "Troubleshooting" = "services/api/troubleshooting.md" }
         ]},
-        # { "Livestream" = "" },
+        { "Livestream" = "services/livestream.md" },
         { "Data Transfer" = "services/data_transfer.md" },
         # { Xmatch = "" },
     ]},
