@@ -108,15 +108,15 @@ import pandas as pd
 r0 = requests.post(
   "https://api.lsst.fink-portal.org/api/v1/conesearch",
   json={
-    "ra": "7.4550",
-    "dec": "-44.635",
-    "radius": "5",
+    "ra": "61.9648",
+    "dec": "-48.713",
+    "radius": "10",
     "columns": "r:diaObjectId,r:midpointMjdTai"
   }
 )
 
 mylist = [val["r:diaObjectId"] for val in r0.json()]
-# len(mylist) = 26
+# len(mylist) = 2
 
 # get full lightcurves for all these alerts
 r1 = requests.post(
@@ -130,7 +130,7 @@ r1 = requests.post(
 
 # Format output in a DataFrame
 pdf = pd.read_json(io.BytesIO(r1.content))
-# len(pdf) = 34
+# len(pdf) = 371
 
 # group by diaObjectId
 pdf.groupby("r:diaObjectId").value_counts()
