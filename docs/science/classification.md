@@ -16,7 +16,7 @@ The challenge now lies in integrating these fields to derive meaningful scientif
 
 ## Designing a user-driven classification scheme
 
-To facilitate the identification of noteworthy events, users can create filters that combine multiple alert fields, allowing them to generate meaningful tags tailored to their research needs. In ZTF we were combining these tags in a ad-hoc manner to provide a single classification label per alert. With LSST, we have revised our classification strategy. It begins with user-defined [Fink Filters](science/filters.md), each generating a reusable tag that can be used unambiguously across all services. Each alert can now have multiple classification tags, and users can add as many classification tags as they require.
+To facilitate the identification of noteworthy events, users can create filters that combine multiple alert fields, allowing them to generate meaningful tags tailored to their research needs. In ZTF we were combining these tags in a ad-hoc manner to provide a single classification label per alert. With LSST, we have revised our classification strategy. It begins with user-defined [Fink Filters :lucide-external-link:](science/filters.md){target="blank_"}, each generating a reusable tag that can be used unambiguously across all services. Each alert can now have multiple classification tags, and users can add as many classification tags as they require.
 
 
 !!! note "Notion of candidate"

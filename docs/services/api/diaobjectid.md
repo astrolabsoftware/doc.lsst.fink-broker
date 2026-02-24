@@ -19,11 +19,11 @@ Alerts emitted by the same astronomical object share the same `diaObjectId` iden
     import requests
     import pandas as pd
 
-    # get alert data for 169830579938263176
+    # get alert data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "json"
       }
@@ -37,9 +37,9 @@ Alerts emitted by the same astronomical object share the same `diaObjectId` iden
 === "curl"
 
     ```bash
-    # Get alert data for 169830579938263176 and save it in a CSV file
+    # Get alert data for 313761043604045880 and save it in a CSV file
     curl -H "Content-Type: application/json" -X POST \
-        -d '{"diaObjectId":"169830579938263176", "output-format":"csv"}' \
+        -d '{"diaObjectId":"313761043604045880", "output-format":"csv"}' \
         https://api.lsst.fink-portal.org/api/v1/sources -o 169830579938263176.csv
     ```
 
@@ -47,14 +47,14 @@ Alerts emitted by the same astronomical object share the same `diaObjectId` iden
 
     ```bash
     # you can also specify parameters in the URL, e.g. with wget:
-    wget "https://api.lsst.fink-portal.org/api/v1/sources?diaObjectId=169830579938263176&output-format=json" -O 169830579938263176.json
+    wget "https://api.lsst.fink-portal.org/api/v1/sources?diaObjectId=313761043604045880&output-format=json" -O 313761043604045880.json
     ```
 
 === "Query URL"
 
     Paste this query on your browser to inspect the results:
     ```
-    https://lsst.fink-portal.org/169830579938263176
+    https://lsst.fink-portal.org/313761043604045880
     ```
 
 You can also retrieve the data for several objects at once:
@@ -67,7 +67,7 @@ You can also retrieve the data for several objects at once:
     import pandas as pd
 
     # ID as string
-    mylist = ["169830579938263176", "169342390932865250"]
+    mylist = ["313761043604045880", "313699514821640259"]
 
     # get alert data for many objects
     r = requests.post(
@@ -95,11 +95,11 @@ You can also choose different output format:
     import requests
     import pandas as pd
 
-    # get alert data for 169830579938263176
+    # get alert data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "json"
       }
@@ -117,11 +117,11 @@ You can also choose different output format:
     import requests
     import pandas as pd
 
-    # get alert data for 169830579938263176
+    # get alert data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "csv"
       }
@@ -138,11 +138,11 @@ You can also choose different output format:
     import requests
     import pandas as pd
 
-    # get alert data for 169830579938263176
+    # get alert data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "parquet"
       }
@@ -159,11 +159,11 @@ You can also choose different output format:
     import requests
     from astropy.io import votable
 
-    # get alert data for 169830579938263176
+    # get alert data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sources",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
         "output-format": "votable"
       }
@@ -182,11 +182,11 @@ The endpoint `/api/v1/objects` give access to summary information about an objec
     ```python
     import requests
 
-    # get summary data for 169830579938263176
+    # get summary data for 313761043604045880
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/objects",
       json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "output-format": "json"
       }
     )

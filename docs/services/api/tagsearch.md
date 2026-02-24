@@ -17,11 +17,11 @@ To facilitate the identification of noteworthy events, users can create filters 
     import requests
     import pandas as pd
 
-    # Get latests 5 hostless candidates
+    # Get latests 5 alerts reported to TNS
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/tags",
       json={
-        "tag": "hostless_candidate",
+        "tag": "in_tns",
         "columns": "r:diaObjectId",
         "n": "5"  # (1)!
       }
@@ -36,24 +36,24 @@ To facilitate the identification of noteworthy events, users can create filters 
 === "curl"
 
     ```bash
-    # Get latests 5 hostless candidates
+    # Get latests 5 alerts reported to TNS
     curl -H "Content-Type: application/json" -X POST \
-        -d '{"tag":"hostless_candidate", "n":"5"}' \
-        https://api.lsst.fink-portal.org/api/v1/tags -o latest_five_hostless_candidates.json
+        -d '{"tag":"in_tns", "n":"5"}' \
+        https://api.lsst.fink-portal.org/api/v1/tags -o latest_five_in_tns.json
     ```
 === "wget"
 
     ```bash
     # you can also specify parameters in the URL, e.g. with wget:
-    wget "https://api.lsst.fink-portal.org/api/v1/tags?tag=hostless_candidate&n=5&output-format=json" \
-        -O latest_five_hostless_candidates.json
+    wget "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=5&output-format=json" \
+        -O latest_five_in_tns.json
     ```
 
 === "Query URL"
 
     Paste this query on your browser to see results:
     ```
-    https://lsst.fink-portal.org/?action=tag&tag=hostless_candidate&last=5
+    https://lsst.fink-portal.org/?action=tag&tag=in_tns&last=5
     ```
 
 You can also easily list the available tags by pasting this into your browser:
@@ -86,7 +86,7 @@ r = requests.post(
 pdf = pd.read_json(io.BytesIO(r.content))
 ```
 
-1. This the maximum number of _alerts_ to retrieve. There could be less than `n` in the specified period.
+1. This the maximum number of _alerts_ to retrieve. There could be more or less than `n` in the specified period.
 
 ## Retrieving full object data
 

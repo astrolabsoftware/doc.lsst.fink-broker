@@ -8,7 +8,7 @@ Now that we discussed the various components of Fink, it is time to access the d
 
     ---
 
-    The [Science Portal](science_portal.md) is a web application that allows you to perform visualisation of aggregated data in Fink, run simple queries. It is best for daily inspection. Data source is from the Fink Database, and new data is available in real-time. No login required.
+    The [Science Portal :lucide-external-link:](https://lsst.fink-portal.org){target="blank_"} is a web application that allows you to perform visualisation of aggregated data in Fink, run simple queries. It is best for daily inspection. Data source is from the Fink Database, and new data is available in real-time. No login required.
 
     ![Screenshot](../img/science_portal_front.png)
 
@@ -16,7 +16,7 @@ Now that we discussed the various components of Fink, it is time to access the d
 
     ---
 
-    The [REST API](api/getting_started.md) allows you to access programmatically the processed data in Fink. It is used under the hood by the Science Portal, although it enables more. You can run simple queries, and it is best for automated workflows. Data source is from the Fink Database, and new data is available in real-time. No login required.
+    The [REST API :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"} allows you to access programmatically the processed data in Fink. It is used under the hood by the Science Portal, although it enables more. You can run simple queries, and it is best for automated workflows. Data source is from the Fink Database, and new data is available in real-time. No login required.
 
     ![Screenshot](../img/api.png)
 
@@ -25,25 +25,25 @@ Now that we discussed the various components of Fink, it is time to access the d
 
     ---
 
-    The [Livestream service](livestream.md) allows you to access alert data (not aggregated objects) selected by [Fink filters](../science/filters.md) in real-time. It enables real-time analyses, automated workflows, and it is best for rapid follow-up observations. Data source is Fink Data Lake (different from the Database). Login required (see [fink-client](../developers/fink_client.md)).
+    The [Livestream service](livestream.md) allows you to access alert data (not aggregated objects) selected by [Fink filters](../science/filters.md) in real-time. It enables real-time analyses, automated workflows, and it is best for rapid follow-up observations. Data source is Fink Data Lake (different from the Database). Login required (see [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}).
 
--   __Fink Bots__
+<!-- -   __Fink Bots__
 
     ---
 
-    The bots allow you to access alert or object data selected by some [Fink filters](../science/filters.md) in real-time or after the night. Information is sent to instant messaging services, such as Slack or Telegram. Best to scroll on a bus! Login can apply depending on the messaging service.
+    The bots allow you to access alert or object data selected by some [Fink filters](../science/filters.md) in real-time or after the night. Information is sent to instant messaging services, such as Slack or Telegram. Best to scroll on a bus! Login can apply depending on the messaging service. -->
 
 -   __Data Transfer__
 
     ---
 
-    The [Data Transfer service](data_transfer.md) allows you to perform bulk download of alert data (not aggregated objects), run complex queries, and exotic analyses using Apache Spark and Apache Kafka. Data source is from the Fink Data Lake (different from the Database), and new data is available a few hours after the observing night has finished. Login required (see [fink-client](../developers/fink_client.md)).
+    The [Data Transfer service](data_transfer.md) allows you to perform bulk download of alert data (not aggregated objects), run complex queries, and exotic analyses using Apache Spark and Apache Kafka. Data source is from the Fink Data Lake (different from the Database), and new data is available a few hours after the observing night has finished. Login required (see [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}).
 
--   __TOM Fink__
+<!-- -   __TOM Fink__
 
     ---
 
-    The [TOM Fink](../developers/external/tom_fink.md) module allows you to easily connect Fink and [Target and Observation Managers :lucide-external-link:](https://tom-toolkit.readthedocs.io/en/stable/introduction/about.html){target="blank_"} (TOMs). Data source is either from the Fink Data Lake (through the Livestream service), or from the Fink Database (through the REST API).
+    The [TOM Fink](../developers/external/tom_fink.md) module allows you to easily connect Fink and [Target and Observation Managers :lucide-external-link:](https://tom-toolkit.readthedocs.io/en/stable/introduction/about.html){target="blank_"} (TOMs). Data source is either from the Fink Data Lake (through the Livestream service), or from the Fink Database (through the REST API). -->
 
 </div>
 

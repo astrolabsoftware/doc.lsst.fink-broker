@@ -30,7 +30,7 @@ In crowded fields, the risk is that there are many SSO within the matching radiu
 
 In ZTF, you can search for a Solar System object by providing its name, resulting in a list of corresponding alerts. However, since the webpages are indexed by `objectId` (which is the identifier for static objects in the sky), you cannot directly link to a Solar System object via URL.
 
-In LSST, webpages are indexed by both the static identifier (`diaObjectId`) and the names of Solar System objects (packed designations), e.g. try [https://lsst.fink-portal.org/J92E18H :lucide-external-link:](https://lsst.fink-portal.org/J92E18H){target="blank_"}.
+In LSST, webpages are indexed by both the static identifier (`diaObjectId`) and the names of Solar System objects (packed designations), e.g. try [https://lsst.fink-portal.org/K15Bt7C :lucide-external-link:](https://lsst.fink-portal.org/K15Bt7C){target="blank_"}.
 
 ## Alert classification
 
@@ -78,11 +78,11 @@ In ZTF, you can obtain light curve data for a specific `objectId` by using the e
         import requests
         import pandas as pd
 
-        # get lightcurve data for 169830579938263176
+        # get lightcurve data for 313761043604045880
         r = requests.post(
             "https://api.lsst.fink-portal.org/api/v1/sources",
             json={
-                "diaObjectId": "169830579938263176",
+                "diaObjectId": "313761043604045880",
                 "output-format": "json"
             }
         )
@@ -100,11 +100,11 @@ import io
 import requests
 import pandas as pd
 
-# get summary data for 169830579938263176
+# get summary data for 313761043604045880
 r = requests.post(
     "https://api.lsst.fink-portal.org/api/v1/objects",
     json={
-        "diaObjectId": "169830579938263176",
+        "diaObjectId": "313761043604045880",
         "output-format": "json"
     }
 )

@@ -1,7 +1,7 @@
 # Image data
 
 !!! info "List of arguments"
-    The list of arguments for running a search by tag can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}. The schema of the returned payload can be found on the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} and you can also retrieve it [programmatically](definitions.md).
+    The list of arguments for running a search by tag can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}.
 
 With every alert, Rubin sends 3 cutouts: one for the current observation, one for the template used to perform difference image analysis, and one for the difference. Each cutout is a FITS file, with at least 30x30 pixels. It contains data, but also mask and variance planes.
 
@@ -9,11 +9,12 @@ With every alert, Rubin sends 3 cutouts: one for the current observation, one fo
     Cutouts are stored in a datalake in Fink, rather than in the database. They are accessible via `diaSourceId`, that is the unique ID for each alert (and not `diaObjectId`). Therefore, you need first to retrieve the list of `diaSourceId` for an object before accessing it cutouts:
 
 ```python title="Obtain diaSourceId"
-# Get all diaSourceId for 169830579938263176
+import requests
+# Get all diaSourceId for 313761043604045880
 r = requests.post(
     'https://api.lsst.fink-portal.org/api/v1/sources',
     json={
-        'diaObjectId': '169830579938263176',
+        'diaObjectId': '313761043604045880',
         'columns': 'r:diaSourceId,r:midpointMjdTai'
     }
 )
@@ -22,7 +23,7 @@ r = requests.post(
 Note that output is sorted from more recent to least recent:
 
 ```python title="Last observation"
-last_diaObjectId = r.json()[0]["r:diaSourceId"]
+last_diaSOurceId = r.json()[0]["r:diaSourceId"]
 ```
 
 ### FITS
@@ -34,14 +35,14 @@ You can retrieve the original FITS file stored in the alert:
     ```bash
     curl -H "Content-Type: application/json" \
         -X POST -d \
-        '{"diaSourceId":"169936132527095844", "kind":"Science", "output-format": "FITS"}' \
-        https://api.lsst.fink-portal.org/api/v1/cutouts -o 169936132527095844_cutoutScience.fits
+        '{"diaSourceId":"170050479238676547", "kind":"Science", "output-format": "FITS"}' \
+        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.fits
     ```
 
 === "wget"
 
     ```bash
-    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=169936132527095844&kind=Science&output-format=FITS" -O 169936132527095844_cutoutScience.fits
+    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547&kind=Science&output-format=FITS" -O 170050479238676547_cutoutScience.fits
     ```
 
 === "Python"
@@ -51,18 +52,18 @@ You can retrieve the original FITS file stored in the alert:
     import requests
     from astropy.io import fits
 
-    # get data for 169936132527095844
+    # get data for 170050479238676547
     r = requests.post(
         'https://api.lsst.fink-portal.org/api/v1/cutouts',
         json={
-            'diaSourceId': '169936132527095844',
+            'diaSourceId': '170050479238676547',
             'kind': 'Science',
             'output-format': 'FITS'
         }
     )
 
     data = fits.open(io.BytesIO(r.content), ignore_missing_simple=True)
-    data.writeto('169936132527095844_cutoutScience.fits')
+    data.writeto('170050479238676547_cutoutScience.fits')
     ```
 
 and then you would read it as usual:
@@ -70,7 +71,7 @@ and then you would read it as usual:
 ```python
 from astropy.io import fits
 
-with fits.open("169936132527095844_cutoutScience.fits") as hdu:
+with fits.open("170050479238676547_cutoutScience.fits") as hdu:
     header = hdu[0].header
     data = hdu[0].data
 ```
@@ -84,15 +85,15 @@ We provide a method to save PNG directly:
     ```bash
     curl -H "Content-Type: application/json" \
         -X POST -d \
-        '{"diaSourceId":"169936132527095844", "kind":"Science"}' \
-        https://api.lsst.fink-portal.org/api/v1/cutouts -o 169936132527095844_cutoutScience.png
+        '{"diaSourceId":"170050479238676547", "kind":"Science"}' \
+        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.png
     ```
 
 === "wget"
 
     ```bash
     # you can also specify parameters in the URL, e.g. with wget:
-    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=169936132527095844_cutoutScience&kind=Science" -O 169936132527095844_cutoutScience.png
+    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547_cutoutScience&kind=Science" -O 170050479238676547_cutoutScience.png
     ```
 
 === "Python"
@@ -102,20 +103,20 @@ We provide a method to save PNG directly:
     import requests
     from PIL import Image as im
 
-    # get data for 169936132527095844
+    # get data for 170050479238676547
     r = requests.post(
         'https://api.lsst.fink-portal.org/api/v1/cutouts',
         json={
-            'diaSourceId': '169936132527095844',
+            'diaSourceId': '170050479238676547',
             'kind': 'Science',
         }
     )
 
     image = im.open(io.BytesIO(r.content))
-    image.save('169936132527095844_cutoutScience.png')
+    image.save('170050479238676547_cutoutScience.png')
     ```
 
-![image](../../img/169936132527095844_cutoutScience.png)
+![image](../../img/170050479238676547_cutoutScience.png)
 
 !!! tip "Display in Jupyter Notebook"
     In a notebook, you would use `display(image)` to display the cutout in the page. If it is too small, resize it using `image.resize((height, width))`.
@@ -128,11 +129,11 @@ import io
 import requests
 from PIL import Image as im
 
-# get data for 169936132527095844
+# get data for 170050479238676547
 r = requests.post(
     'https://api.lsst.fink-portal.org/api/v1/cutouts',
     json={
-        'diaSourceId': '169936132527095844',
+        'diaSourceId': '170050479238676547',
         'kind': 'Science', # (1)!
         'stretch': 'sigmoid', # (2)!
         'colormap': 'viridis', # (3)!
@@ -161,11 +162,11 @@ You can also retrieve only the data block stored in the alert:
 ```python
 import requests
 
-# get data for 169936132527095844
+# get data for 170050479238676547
 r = requests.post(
     'https://api.lsst.fink-portal.org/api/v1/cutouts',
     json={
-        'diaSourceId': '169936132527095844',
+        'diaSourceId': '170050479238676547',
         'kind': 'Science',
         'output-format': 'array'
     }
@@ -179,11 +180,11 @@ You can also request the 3 cutouts in one call now by specifying `kind=All`:
 ```python
 import requests
 
-# get data for 169936132527095844
+# get data for 170050479238676547
 r = requests.post(
     'https://api.lsst.fink-portal.org/api/v1/cutouts',
     json={
-        'diaSourceId': '169936132527095844',
+        'diaSourceId': '170050479238676547',
         'kind': 'All',
         'output-format': 'array'
     }
