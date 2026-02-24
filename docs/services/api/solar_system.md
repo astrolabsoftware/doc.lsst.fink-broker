@@ -7,7 +7,7 @@ Every time a new alert is emitted, a new `diaSource` is created. LSST makes an a
 
 ## Alert data
 
-You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467), or provisonal designation (e.g. 2003 UT84, K03U84T) of asteroids. Under the hood, we resolve the name using the [quaero :lucide-external-link:](https://ssp.imcce.fr/webservices/ssodnet/api/quaero/){target="blank_"} service from SsODNet. You can also search for comets (although none has been seen yet by Rubin in the alert stream), but note that we have far less comets than asteroids.
+You can enter any name (e.g. Ukyounodaibu), number (e.g. 734394), or provisonal designation (e.g. 2015 BC557, K15Bt7C) of asteroids. Under the hood, we resolve the name using the [quaero :lucide-external-link:](https://ssp.imcce.fr/webservices/ssodnet/api/quaero/){target="blank_"} service from SsODNet. You can also search for comets (although none has been seen yet by Rubin in the alert stream), but note that we have far less comets than asteroids.
 
 === "Python"
 
@@ -16,11 +16,11 @@ You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467),
     import requests
     import pandas as pd
 
-    # get data for provisional designation 2003 UT84
+    # get data for provisional designation 2015 BC557
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sso",
       json={
-        "n_or_d": "2003 UT84",
+        "n_or_d": "2015 BC557",
         "output-format": "json"
       }
     )
@@ -32,8 +32,8 @@ You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467),
 === "curl"
 
     ```bash
-    # Get data for the asteroid 2003 UT84 and save it in a CSV file
-    curl -H "Content-Type: application/json" -X POST -d '{"n_or_d":"2003 UT84", "output-format":"csv"}' https://api.lsst.fink-portal.org/api/v1/sso -o 2003_UT84.csv
+    # Get data for the asteroid 2015 BC557 and save it in a CSV file
+    curl -H "Content-Type: application/json" -X POST -d '{"n_or_d":"2015 BC557", "output-format":"csv"}' https://api.lsst.fink-portal.org/api/v1/sso -o 2003_UT84.csv
     ```
 
 === "wget"
@@ -42,14 +42,14 @@ You can enter any name (e.g. Schwarzschilda, JulienPeloton), number (e.g. 8467),
 
     ```bash
     # you can also specify parameters in the URL
-    wget "https://api.lsst.fink-portal.org/api/v1/sso?n_or_d=2003_UT84&output-format=json" -O 2003_UT84.json
+    wget "https://api.lsst.fink-portal.org/api/v1/sso?n_or_d=2015_BC557&output-format=json" -O 2015_BC557.json
     ```
 
 === "Query URL"
 
     SSO pages are indexed by packed provisional designation. Paste this query on your browser to inspect the object:
     ```
-    https://lsst.fink-portal.org/K03U84T
+    https://lsst.fink-portal.org/K15Bt7C
     ```
 
 You can also retrieve the data for several objects at once:
@@ -60,7 +60,7 @@ import requests
 import pandas as pd
 
 # ID as string
-mylist = ["2003 UT84", "464064", "Schwarzschilda"]
+mylist = ["734394", "K15Bt7C", "SchUkyounodaibuwarzschilda"]
 
 # get alert data for many objects
 r = requests.post(
@@ -93,11 +93,11 @@ Note that you can also choose different output format:
     import requests
     import pandas as pd
 
-    # get data for provisional designation 2003 UT84
+    # get data for provisional designation 2015 BC557
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sso",
       json={
-        "n_or_d": "2003 UT84",
+        "n_or_d": "2015 BC557",
         "output-format": "json"
       }
     )
@@ -114,11 +114,11 @@ Note that you can also choose different output format:
     import requests
     import pandas as pd
 
-    # get data for provisional designation 2003 UT84
+    # get data for provisional designation 2015 BC557
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sso",
       json={
-        "n_or_d": "2003 UT84",
+        "n_or_d": "2015 BC557",
         "output-format": "csv"
       }
     )
@@ -134,11 +134,11 @@ Note that you can also choose different output format:
     import requests
     import pandas as pd
 
-    # get data for provisional designation 2003 UT84
+    # get data for provisional designation 2015 BC557
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sso",
       json={
-        "n_or_d": "2003 UT84",
+        "n_or_d": "2015 BC557",
         "output-format": "parquet"
       }
     )
@@ -154,11 +154,11 @@ Note that you can also choose different output format:
     import requests
     from astropy.io import votable
 
-    # get data for provisional designation 2003 UT84
+    # get data for provisional designation 2015 BC557
     r = requests.post(
       "https://api.lsst.fink-portal.org/api/v1/sso",
       json={
-        "n_or_d": "2003 UT84",
+        "n_or_d": "2015 BC557",
         "output-format": "votable"
       }
     )
@@ -175,11 +175,11 @@ The endpoint `TBD` give access to summary information about an object, such as t
 ```python title="Object summary information"
 import requests
 
-# get summary data for 2003 UT84
+# get summary data for 2015 BC557
 r = requests.post(
   "https://api.lsst.fink-portal.org/TBD",
   json={
-    "n_or_d": "2003 UT84",
+    "n_or_d": "2015 BC557",
     "output-format": "json"
   }
 )
@@ -201,11 +201,11 @@ import io
 import requests
 import pandas as pd
 
-# get data for object 2003 UT84
+# get data for object 2015 BC557
 r = requests.post(
   "https://api.lsst.fink-portal.org/api/v1/sso",
   json={
-    "n_or_d": "2003 UT84",
+    "n_or_d": "2015 BC557",
     "withEphem": True,
     "output-format": "json"
   }
