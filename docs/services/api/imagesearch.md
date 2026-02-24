@@ -1,7 +1,7 @@
 # Image data
 
 !!! info "List of arguments"
-    The list of arguments for running a search by tag can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}. The schema of the returned payload can be found on the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} and you can also retrieve it [programmatically](definitions.md).
+    The list of arguments for running a search by tag can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}.
 
 With every alert, Rubin sends 3 cutouts: one for the current observation, one for the template used to perform difference image analysis, and one for the difference. Each cutout is a FITS file, with at least 30x30 pixels. It contains data, but also mask and variance planes.
 

@@ -1,7 +1,7 @@
 # Resolving astronomical names
 
 !!! info "List of arguments"
-    The list of arguments for resolving name can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}. The schema of the returned payload can be found on the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} and you can also retrieve it [programmatically](definitions.md).
+    The list of arguments for resolving name can be found at [https://api.lsst.fink-portal.org :lucide-external-link:](https://api.lsst.fink-portal.org){target="blank_"}. The returned payload will depend on the resolver used.
 
 Naming objects is a complex endeavor, often resulting in multiple names or designations for the same object. In the era of big data, this challenge becomes even more pronounced, as the need to quickly assign names to millions of objects can lead to non-intuitive designation processes.
 
