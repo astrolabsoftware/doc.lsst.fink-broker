@@ -10,7 +10,7 @@ This manual has been tested for `fink-client` version 10.0. Other versions might
 
 ## Purpose
 
-The livestream service is based on the Fink filters. After each exposure, Fink processes the alerts sent by ZTF and the filters select alerts to be transmitted based on their content. These alerts are sent to the Fink [Apache Kafka :lucide-external-link:](https://kafka.apache.org/){target="blank_"} cluster, and substreams are produced (1 filter = 1 substream), identified by their _topic_ name. Each alert pushed is available 7 days in the queue, and consumers can replay streams indefinitely.
+The livestream service is based on the Fink filters. After each exposure, Fink processes the alerts sent by LSST and the filters select alerts to be transmitted based on their content. These alerts are sent to the Fink [Apache Kafka :lucide-external-link:](https://kafka.apache.org/){target="blank_"} cluster, and substreams are produced (1 filter = 1 substream), identified by their _topic_ name. Each alert pushed is available for 7 days in the queue, and consumers can replay streams indefinitely.
 
 As Kafka can be somehow cumbersome, we developed a client to facilitate the stream consuming part for Fink users: [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}. Users can connect to one or more topics, and new topics can be created via new Fink filters.
 

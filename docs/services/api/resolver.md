@@ -9,7 +9,7 @@ Instead of proposing a new naming scheme, we aim to provide a service that allow
 
 We are committed to expanding this service and will continue to add new sources of information.
 
-### TNS to ZTF
+### TNS to LSST
 
 Question: I have a TNS identifier, are there LSST `diaObjectId` corresponding?
 
@@ -59,7 +59,7 @@ pdf = pd.read_json(io.BytesIO(r.content)) # (1)!
     pdf = pd.read_json(io.BytesIO(r.content))
     ```
 
-### ZTF to TNS
+### LSST to TNS
 
 Question: I have a LSST `diaObjectId` name, are there counterparts in TNS?
 
@@ -82,7 +82,7 @@ r = requests.post(
 pdf = pd.read_json(io.BytesIO(r.content))
 ```
 
-### SIMBAD to ZTF
+### SIMBAD to LSST
 
 I have an astronomical object name referenced in SIMBAD, are there counterparts in LSST? As these objects can be extended, we typically provide coordinates, and then you need to run a conesearch:
 
