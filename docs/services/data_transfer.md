@@ -112,7 +112,13 @@ fink_datatransfer \
     --verbose
 ```
 
-Alert data will be consumed and stored on disk as parquet files. Because LSST is not filling all fields, if you try to read using Pandas directly, you will likely have a typing error. Instead use the provided function from the fink-client package:
+Alert data will be consumed and stored on disk as parquet files. Because LSST is not filling all fields, if you try to read using Pandas directly, you will likely have a casting, typing, or Arror error such as: 
+
+```python
+ArrowNotImplementedError: Unsupported cast from double to null using function cast_null
+```
+
+Instead use the provided function from the fink-client package:
 
 ```python
 from fink_client.visualisation import read_parquet
