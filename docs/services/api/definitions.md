@@ -28,11 +28,11 @@ These are called column families.
 ## Tag definition
 
 !!! info "What are the available user-defined in Fink?"
-    The list of Fink class can be found at [https://api.ztf.fink-portal.org/api/v1/tags](https://api.ztf.fink-portal.org/api/v1/tags). We recommend also to read how the [classification scheme](../../science/classification.md) is built.
+    The list of Fink class can be found at [https://api.lsst.fink-portal.org/api/v1/tags](https://api.lsst.fink-portal.org/api/v1/tags). We recommend also to read how the [classification scheme](../../science/classification.md) is built.
 
     You can programmatically access the list of all the Fink tags using e.g.:
 
     ```bash
     curl -H "Content-Type: application/json" -X GET \
-        https://api.ztf.fink-portal.org/api/v1/tags -o fink_tags.json
+        https://api.lsst.fink-portal.org/api/v1/tags -o fink_tags.json
     ```
