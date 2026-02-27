@@ -4,6 +4,9 @@ _date 24/02/2026_
 
 This manual has been tested for `fink-client` version 10.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
+!!! info "From ZTF to LSST"
+    ZTF users need to migrate their fink-client to version 10.0, and authenticate again.
+
 ## Purpose
 
 The Data Transfer service allows users to explore and transfer historical data at scale: [https://lsst.fink-portal.org/download :lucide-external-link:](https://lsst.fink-portal.org/download){target="blank_"}. This service lets users to select any observing nights from LSST, define the content of the output, and stream data directly to anywhere!
