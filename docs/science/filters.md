@@ -32,7 +32,7 @@ As we process alerts, interesting alerts are automatically picked up by filters 
 ### REST API & Science Portal
 
 !!! tip "Accessing filter data from API"
-    With LSST, you can access filter data with the REST API using the `/api/v1/tags` endpoint. This is not possible with ZTF. See [Search by tags](services/api/tagsearch.md) for more information.
+    With LSST, you can access filter data with the REST API using the `/api/v1/tags` endpoint. This is not possible with ZTF. See [Search by tags](../services/api/tagsearch.md) for more information.
 
 ### Fink bots
 
