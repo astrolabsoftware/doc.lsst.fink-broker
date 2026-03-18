@@ -86,6 +86,21 @@ In practice, this means forced photometry values for `prvDiaSources.scienceFlux`
 
 ![Screenshot](../img/forced_diaSource_vs_diaObject.png)
 
+## Flux to magnitude
+
+Flux measurements $f$ are reported in nanJansky units. You can easily convert in magnitude $m$ (ABMag) using the following formulae:
+
+$$
+m = 31.4 -2.5 \log{f} \\
+\Delta m = \dfrac{2.5 \times \Delta f}{f \times \ln{10}}
+$$
+
+where 31.4 is the zero point.
+
+## Photometry on Fink Portal
+
+On the Fink Portal, you can easily change 
+
 ## Photometry tutorials
 
 You can explore a series of notebooks to manipulate photometry with Fink:
