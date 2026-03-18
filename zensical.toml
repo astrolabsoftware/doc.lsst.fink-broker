@@ -27,6 +27,7 @@ nav = [
     ]},
   { "LSST alert data tips" = [
       { "From ZTF to LSST" = "data/ztf_to_lsst.md" },
+      { "Photometry" = "data/photometry.md" },
       { "Alert data quality" = "data/quality.md" },
       { "Known issues" = "data/issues.md" }
     ]},
@@ -75,8 +76,15 @@ nav = [
     ]},
   # {"Citing Fink" = ""}
 ]
-extra_css = ["assets/stylesheets/extra.css"]
-
+extra_css = [
+    "assets/stylesheets/extra.css",
+    "https://unpkg.com/katex@0/dist/katex.min.css"
+]
+extra_javascript = [
+    "javascripts/katex.js",
+    "https://unpkg.com/katex@0/dist/katex.min.js",
+    "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"
+]
 
 [project.extra.status]
 new = "Recently added"
@@ -133,3 +141,5 @@ toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
 primary = "deep orange"
 
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
