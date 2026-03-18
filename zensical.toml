@@ -27,6 +27,7 @@ nav = [
     ]},
   { "LSST alert data tips" = [
       { "From ZTF to LSST" = "data/ztf_to_lsst.md" },
+      { "Photometry" = "data/photometry.md" },
       { "Alert data quality" = "data/quality.md" },
       { "Known issues" = "data/issues.md" }
     ]},
