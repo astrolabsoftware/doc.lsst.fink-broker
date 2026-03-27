@@ -19,12 +19,12 @@ To facilitate the identification of noteworthy events, users can create filters 
 
     # Get latests 5 alerts reported to TNS
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/tags",
-      json={
-        "tag": "in_tns",
-        "columns": "r:diaObjectId",
-        "n": "5"  # (1)!
-      }
+        "https://api.lsst.fink-portal.org/api/v1/tags",
+        json={
+            "tag": "in_tns",
+            "columns": "r:diaObjectId",
+            "n": "5",  # (1)!
+        },
     )
 
     # Format output in a DataFrame
@@ -73,13 +73,13 @@ import pandas as pd
 
 # Get all alerts reported in TNS between December 10th 2025 and December 31st 2025
 r = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/tags",
-  json={
-    "tag": "in_tns",
-    "n": "100", # (1)!
-    "startdate": "2025-12-10",
-    "stopdate": "2025-12-31"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/tags",
+    json={
+        "tag": "in_tns",
+        "n": "100",  # (1)!
+        "startdate": "2025-12-10",
+        "stopdate": "2025-12-31",
+    },
 )
 
 # Format output in a DataFrame
@@ -96,24 +96,24 @@ Hence, if you need to query all the _alert_ data for _objects_ found with a tag 
 
 ```python title="Retrieve full lightcurve for objects found in tag search"
 r0 = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/tags",
-  json={
-    "tag": "in_tns",
-    "n": "10",
-    "columns": "r:diaObjectId" # (1)!
-  }
+    "https://api.lsst.fink-portal.org/api/v1/tags",
+    json={
+        "tag": "in_tns",
+        "n": "10",
+        "columns": "r:diaObjectId",  # (1)!
+    },
 )
 
 mylist = [str(val["r:diaObjectId"]) for val in r0.json()]
 
 # get full lightcurves for all these alerts
 r1 = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/sources",
-  json={
-    "diaObjectId": ",".join(mylist),
-    "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr", # (2)!
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/sources",
+    json={
+        "diaObjectId": ",".join(mylist),
+        "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",  # (2)!
+        "output-format": "json",
+    },
 )
 
 # Format output in a DataFrame

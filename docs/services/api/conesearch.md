@@ -26,13 +26,13 @@ Try this on a terminal:
 
     # Get all objects falling within (center, radius) = ((ra, dec), radius)
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/conesearch",
-      json={
-        "ra": "8.986275",
-        "dec": "-42.709834",
-        "radius": "5",
-        "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr", # (1)!
-      }
+        "https://api.lsst.fink-portal.org/api/v1/conesearch",
+        json={
+            "ra": "8.986275",
+            "dec": "-42.709834",
+            "radius": "5",
+            "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",  # (1)!
+        },
     )
 
     # Format output in a DataFrame
@@ -75,14 +75,14 @@ Note that in case of several objects matching, the results will be sorted accord
     # Get all objects falling within (center, radius) = ((ra, dec), radius)
     # between 2025-12-10 05:59:37.000 (included) and 2025-12-17 05:59:37.000 (excluded)
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/conesearch",
-      json={
-        "ra": "7.4550",
-        "dec": "-44.635",
-        "radius": "150",
-        "startdate": "2025-12-10 05:59:37.000",
-        "window": 7  # in days
-      }
+        "https://api.lsst.fink-portal.org/api/v1/conesearch",
+        json={
+            "ra": "7.4550",
+            "dec": "-44.635",
+            "radius": "150",
+            "startdate": "2025-12-10 05:59:37.000",
+            "window": 7,  # in days
+        },
     )
 
     # Format output in a DataFrame
@@ -106,13 +106,13 @@ import pandas as pd
 
 # Get the diaObjectId for the alert(s) within a circle on the sky
 r0 = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/conesearch",
-  json={
-    "ra": "61.9648",
-    "dec": "-48.713",
-    "radius": "10",
-    "columns": "r:diaObjectId,r:midpointMjdTai"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/conesearch",
+    json={
+        "ra": "61.9648",
+        "dec": "-48.713",
+        "radius": "10",
+        "columns": "r:diaObjectId,r:midpointMjdTai",
+    },
 )
 
 mylist = [val["r:diaObjectId"] for val in r0.json()]
@@ -120,12 +120,12 @@ mylist = [val["r:diaObjectId"] for val in r0.json()]
 
 # get full lightcurves for all these alerts
 r1 = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/sources",
-  json={
-    "diaObjectId": ",".join(mylist),
-    "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/sources",
+    json={
+        "diaObjectId": ",".join(mylist),
+        "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+        "output-format": "json",
+    },
 )
 
 # Format output in a DataFrame
@@ -146,17 +146,17 @@ You can easily perform a crossmatch with a catalog of astronomical sources by lo
     mycatalog = read(...)
 
     for source in mycatalog:
-      r0 = requests.post(
-        "https://api.lsst.fink-portal.org/api/v1/conesearch",
-        json={
-          "ra": source["ra"],
-          "dec": source["dec"],
-          "radius": "5",
-          "columns": "r:diaObjectId,r:midpointMjdTai"
-        }
-      )
+        r0 = requests.post(
+            "https://api.lsst.fink-portal.org/api/v1/conesearch",
+            json={
+                "ra": source["ra"],
+                "dec": source["dec"],
+                "radius": "5",
+                "columns": "r:diaObjectId,r:midpointMjdTai",
+            },
+        )
 
-      # do whatever
+        # do whatever
     ```
 
 But note that for 10,000+ sources, this can be pretty slow, and impact other users. Instead for large catalogs, prefer the Xmatch service will be made available shortly.

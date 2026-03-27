@@ -61,10 +61,7 @@ In ZTF, you can obtain light curve data for a specific `objectId` by using the e
         # get lightcurve data for ZTF21aaxtctv
         r = requests.post(
             "https://api.ztf.fink-portal.org/api/v1/objects",
-            json={
-                "objectId": "ZTF21aaxtctv",
-                "output-format": "json"
-            }
+            json={"objectId": "ZTF21aaxtctv", "output-format": "json"},
         )
 
         # Format output in a DataFrame
@@ -81,10 +78,7 @@ In ZTF, you can obtain light curve data for a specific `objectId` by using the e
         # get lightcurve data for 313761043604045880
         r = requests.post(
             "https://api.lsst.fink-portal.org/api/v1/sources",
-            json={
-                "diaObjectId": "313761043604045880",
-                "output-format": "json"
-            }
+            json={"diaObjectId": "313761043604045880", "output-format": "json"},
         )
 
         # Format output in a DataFrame
@@ -103,10 +97,7 @@ import pandas as pd
 # get summary data for 313761043604045880
 r = requests.post(
     "https://api.lsst.fink-portal.org/api/v1/objects",
-    json={
-        "diaObjectId": "313761043604045880",
-        "output-format": "json"
-    }
+    json={"diaObjectId": "313761043604045880", "output-format": "json"},
 )
 
 # Format output in a DataFrame

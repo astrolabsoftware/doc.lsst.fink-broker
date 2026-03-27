@@ -92,7 +92,7 @@ fink_science/rubin/
 The processor will typically look like:
 
 ```python
-from line_profiler import profile # (1)!
+from line_profiler import profile  # (1)!
 
 from pyspark.sql.functions import pandas_udf
 from pyspark.sql.types import FloatType
@@ -101,11 +101,13 @@ import pandas as pd
 
 from fink_science.rubin.your_module.utils import super_magic_funtion
 
+
 @pandas_udf(FloatType())
 @profile
-def myprocessor(diaObjectId: pd.Series, psfFlux: pd.Series, anothercolumn: pd.Series) -> pd.Series:
-    """ Documentation please!
-    """
+def myprocessor(
+    diaObjectId: pd.Series, psfFlux: pd.Series, anothercolumn: pd.Series
+) -> pd.Series:
+    """Documentation please!"""
     # your logic goes here
     output = super_magic_funtion(*args)
 
@@ -180,7 +182,6 @@ if __name__ == "__main__":
     globs["custom_path"] = custom_path
 
     ...
-
 ```
 
 ## Submit your science module

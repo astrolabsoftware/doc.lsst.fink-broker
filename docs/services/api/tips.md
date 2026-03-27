@@ -11,7 +11,7 @@ r = requests.post(
     json={
         "n_or_d": "8467",
         "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
-    }
+    },
 )
 ```
 

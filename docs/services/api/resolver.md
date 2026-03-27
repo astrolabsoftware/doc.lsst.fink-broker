@@ -19,15 +19,12 @@ import requests
 import pandas as pd
 
 r = requests.post(
-  'https://api.lsst.fink-portal.org/api/v1/resolver',
-  json={
-    'resolver': 'tns',
-    'name_or_id': 'SN 2022and'
-  }
+    "https://api.lsst.fink-portal.org/api/v1/resolver",
+    json={"resolver": "tns", "name_or_id": "SN 2022and"},
 )
 
 # Format output in a DataFrame
-pdf = pd.read_json(io.BytesIO(r.content)) # (1)!
+pdf = pd.read_json(io.BytesIO(r.content))  # (1)!
 ```
 
 1. Output:
@@ -47,12 +44,8 @@ pdf = pd.read_json(io.BytesIO(r.content)) # (1)!
     import pandas as pd
 
     r = requests.post(
-      'https://api.lsst.fink-portal.org/api/v1/resolver',
-      json={
-          'resolver': 'tns',
-          'name_or_id': '',
-          'nmax': 1000000
-      }
+        "https://api.lsst.fink-portal.org/api/v1/resolver",
+        json={"resolver": "tns", "name_or_id": "", "nmax": 1000000},
     )
 
     # > 200k rows
@@ -70,12 +63,8 @@ import requests
 import pandas as pd
 
 r = requests.post(
-  'https://api.lsst.fink-portal.org/api/v1/resolver',
-  json={
-    'resolver': 'tns',
-    'reverse': True,
-    'name_or_id': '313888627082919999'
-  }
+    "https://api.lsst.fink-portal.org/api/v1/resolver",
+    json={"resolver": "tns", "reverse": True, "name_or_id": "313888627082919999"},
 )
 
 # Format output in a DataFrame
@@ -93,33 +82,30 @@ import requests
 import pandas as pd
 
 r = requests.post(
-  'https://api.lsst.fink-portal.org/api/v1/resolver',
-  json={
-    'resolver': 'simbad',
-    'name_or_id': 'LEDA 1258009'
-  }
+    "https://api.lsst.fink-portal.org/api/v1/resolver",
+    json={"resolver": "simbad", "name_or_id": "LEDA 1258009"},
 )
 
 if r.json() != []:
-    print('Object found!')
+    print("Object found!")
     print(r.json())
     print()
 
     r = requests.post(
-      'https://api.lsst.fink-portal.org/api/v1/conesearch',
-      json={
-        'ra': r.json()[0]['jradeg'],
-        'dec': r.json()[0]['jdedeg'],
-        'radius': 60,
-        'columns': 'r:diaObjectId'
-      }
+        "https://api.lsst.fink-portal.org/api/v1/conesearch",
+        json={
+            "ra": r.json()[0]["jradeg"],
+            "dec": r.json()[0]["jdedeg"],
+            "radius": 60,
+            "columns": "r:diaObjectId",
+        },
     )
 
     # Format output in a DataFrame
     pdf = pd.read_json(io.BytesIO(r.content))
-    print('Object(s) in LSST: {}'.format(pdf['r:diaObjectId'].to_numpy()))
+    print("Object(s) in LSST: {}".format(pdf["r:diaObjectId"].to_numpy()))
 else:
-    print('No objects found')
+    print("No objects found")
 ```
 
 Leading in this example to:
@@ -155,12 +141,8 @@ import requests
 import pandas as pd
 
 r = requests.post(
-  'https://api.lsst.fink-portal.org/api/v1/resolver',
-  json={
-    'resolver': 'simbad',
-    'reverse': True,
-    'name_or_id': '313972183328621131'
-  }
+    "https://api.lsst.fink-portal.org/api/v1/resolver",
+    json={"resolver": "simbad", "reverse": True, "name_or_id": "313972183328621131"},
 )
 pdf = pd.read_json(io.BytesIO(r.content))
 ```
@@ -178,12 +160,12 @@ import pandas as pd
 
 # get LSST IDs for provisional designation 2015 BC557
 r = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/sso",
-  json={
-    "n_or_d": "2015 BC557",
-    "columns": "r:diaSourceId,r:ssObjectId",
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/sso",
+    json={
+        "n_or_d": "2015 BC557",
+        "columns": "r:diaSourceId,r:ssObjectId",
+        "output-format": "json",
+    },
 )
 
 pdf = pd.read_json(io.BytesIO(r.content))
@@ -199,17 +181,13 @@ import requests
 import pandas as pd
 
 r = requests.post(
-  'https://api.lsst.fink-portal.org/api/v1/resolver',
-  json={
-    'resolver': 'ssodnet',
-    'reverse': True,
-    'name_or_id': '21164728071239491'
-  }
+    "https://api.lsst.fink-portal.org/api/v1/resolver",
+    json={"resolver": "ssodnet", "reverse": True, "name_or_id": "21164728071239491"},
 )
 
 if r.json() != []:
-    name = r.json()[0]['r:unpacked_primary_provisional_designation']
-    print('Asteroid counterpart found with designation {}'.format(name))
+    name = r.json()[0]["r:unpacked_primary_provisional_designation"]
+    print("Asteroid counterpart found with designation {}".format(name))
 ```
 
 Leading to:

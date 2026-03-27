@@ -12,11 +12,8 @@ import pandas as pd
 
 # get stats for all the year 2026
 r = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/statistics",
-  json={
-    "date": "2026",
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/statistics",
+    json={"date": "2026", "output-format": "json"},
 )
 
 # Format output in a DataFrame

@@ -126,7 +126,6 @@ if __name__ == "__main__":
     globs["custom_path"] = custom_path
 
     ...
-
 ```
 
 ## Submit your Filter
