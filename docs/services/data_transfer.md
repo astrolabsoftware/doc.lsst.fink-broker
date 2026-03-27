@@ -1,11 +1,11 @@
 # Fink Data Transfer
 
-_date 24/02/2026_
+_date 27/03/2026_
 
-This manual has been tested for `fink-client` version 10.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
+This manual has been tested for `fink-client` version 11.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
 !!! info "From ZTF to LSST"
-    ZTF users need to migrate their fink-client to version 10.0, and authenticate again.
+    ZTF users need to migrate their fink-client to at least version 10.0, and authenticate again.
 
 ## Purpose
 
@@ -107,34 +107,38 @@ On the submission web page, when you read the message:
 this means you can already start polling the data on your computer. You will then invoke for example (see the command on the right panel):
 
 ```bash
-# requires fink-client>=10.0
 fink_datatransfer \
     -survey lsst \
     -topic ftransfer_lsst_2026-02-24_34995 \
     -outdir ftransfer_lsst_2026-02-24_34995 \
+    --dump_schemas \
     --verbose
 ```
 
-Alert data will be consumed and stored on disk as parquet files. Because LSST is not filling all fields, if you try to read using Pandas directly, you will likely have a casting, typing, or Arror error such as: 
+Alert data will be consumed and stored on disk as parquet files. You can easily read these alerts using Pyarrow, or Pandas: 
 
-```python
-ArrowNotImplementedError: Unsupported cast from double to null using function cast_null
-```
+=== "Pyarrow"
+    ```python
+    import pyarrow.parquet as pq
 
-Instead use the provided function from the fink-client package:
+    arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-27_300346.metadata")
+    table = pq.read_table("ftransfer_lsst_2026-03-27_300346/", schema=arrow_schema)
+    ```
 
-```python
-from fink_client.visualisation import read_parquet
+    Beware, if you want transform this table into a Pandas DataFrame, you will likely have issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
 
-# read alerts in a DataFrame
-pdf = read_parquet("ftransfer_lsst_2026-02-24_34995")
+=== "Pandas"
+    !!! warning "diaObjectId and type inference"
+        If you are using Pandas to read alerts, we highly recommend to read the `Troubleshooting` section of this manual, as the values for `diaObjectId` can be wrongly decoded due to bad type inference.
 
-          diaObjectId         snr  ...                   timestamp  tns_type_recomputed
-0  313761043604045880  277.624939  ...  2026-02-19 01:34:46.279993              Unknown
-1  313761043604045880  281.893402  ...  2026-02-19 01:47:20.428791              Unknown
+    ```python
+    import pandas as pd
+    import pyarrow.parquet as pq
 
-[2 rows x 29 columns]
-```
+    # Schema is optional, but highly recommended
+    arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-27_300346.metadata")
+    pdf = pd.read_parquet("ftransfer_lsst_2026-03-27_300346/", schema=arrow_schema)
+    ```
 
 You can stop the poll by hitting `CTRL+C` on your keyboard, and resume later. The poll will restart from the last offset, namely you will not have duplicate. In case you want to start polling data from the beginning of the stream, you can use the `--restart_from_beginning` option:
 
@@ -149,27 +153,58 @@ fink_datatransfer \
     --restart_from_beginning
 ```
 
-Finally you can inspect the schema of the alerts using the option `--dump_schema`:
+Finally you can inspect the schemas of the alerts using the option `--dump_schemas`. This option will produce two files on disk: one json file for the Avro schema (`avro_schema_*.json`), and one metadata file for the Arrow schema (`arrow_schema_*.metadata`) 
 
-
-```bash
-# Make sure <output directory> is empty or does not
-# exist to avoid duplicates.
-fink_datatransfer \
-    -topic <topic name> \
-    -survey lsst \
-    -outdir <output directory> \
-    --verbose \
-    --dump_schema
-```
-
-The option will produce a json file on disk whose name is `schema_<topic name>.json`. Schema can be inspected using e.g.:
+Avro schema can be inspected using e.g.:
 
 ```bash
 cat filename.json | jq
 ```
 
-### Multiprocessing
+and Arrow schema using pyarrow:
+
+```python
+import pyarrow.parquet as pq
+
+arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-27_300346.metadata")
+```
+
+!!! warning "Argument name change"
+    in version 11, the argument previously called `--dump_schema` has been replaced by `--dump_schemas` to reflect the fact that we store both Arrow and Avro schemas.
+
+### Avro files
+
+!!! tip "Storing data as Avro"
+    From version 11, data can be stored either as Parquet or Avro files. Default is Parquet.
+
+By default, the client will produce Parquet files. For version < 11, those files had issues with data type. While this has been corrected in version 11, we now also give the possibility to directly write data in Avro, that is without performing any conversion under the hood (Fink manipulates Avro). Simply specify the argument `--outformat avro`:
+
+```bash
+fink_datatransfer \
+    -survey lsst \
+    -topic ftransfer_lsst_2026-02-24_34995 \
+    -outdir ftransfer_lsst_2026-02-24_34995 \
+    --dump_schemas \
+    -outformat avro \
+    --verbose
+```
+
+Note that we provide tools to read Avro file if you do not have a reader available:
+
+```python
+from fink_client.avro_utils import AlertReader
+
+r = AlertReader("ftransfer_lsst_2026-03-27_300346/")
+
+# Get a list of `size` alerts
+alerts = r.to_list(size=1)
+
+# Each alert is a dictionary
+alerts[0]["diaObject"]["diaObjectId"]
+170028510532337794
+```
+
+### Note on multiprocessing
 
 From `fink-client` version 7.0, we have introduced the functionality of simultaneous downloading from multiple partitions through the implementation of multi-processing technology, which is an approach that takes advantage of modern hardware resources to run multiple tasks in parallel.
 By using this strategy, the service is able to simultaneously access different partitions of the data stored in the Kafka server, enabling faster and more efficient transfer. The benefits of this approach are numerous, ranging from optimizing transfer times to making more efficient use of available hardware resources.
@@ -183,10 +218,18 @@ fink_datatransfer \
     -survey lsst \
     -nconsumers 5 \
     -batchsize 1000 \
+    --dump_schemas \
     --verbose
 ```
 
 More details on the expected performances are given in this [post :lucide-external-link:](https://fink-broker.org/news/2023-01-17-data-transfer/).
+
+## Tutorials
+
+You will find tutorials for manipulating data transfer output on GitHub:
+
+- [Display a lightcurve](https://github.com/astrolabsoftware/fink-tutorials/tree/main/lsst/data_transfer)
+- [Different photometry](https://github.com/astrolabsoftware/fink-tutorials/tree/main/lsst/photometry)
 
 ## How is this done in practice?
 
@@ -217,11 +260,64 @@ cimpl.KafkaException: KafkaError{code=UNKNOWN_TOPIC_OR_PART,val=3,str="Broker: U
 
 Wait a minute, and retry. If the error persists, contact Julien.
 
+### diaObjectId casting errors
+
+Because LSST is not filling all fields, if you try to read using Pandas directly for client version < 11, you will likely have a casting, typing, or Arror error such as:
+
+```python
+ArrowNotImplementedError: Unsupported cast from double to null using function cast_null
+```
+
+This has been fixed in v11, although the column `diaObjectId` is still subject to wrong cast if using Pandas. The reason is that this field can be a long integer, or integer, or null... This is too much for type inference performed by Pandas, even when specifying the explicit arrow schema: 
+
+```python
+import pandas as pd
+import pyarrow.parquet as pq
+
+arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-26_577207.metadata")
+pdf = pd.read_parquet("ftransfer_lsst_2026-03-26_577207/", schema=arrow_schema)
+
+pdf["diaObject"].apply(pd.Series)["diaObjectId"]
+0      3.138535e+17
+1               NaN
+2               NaN
+3      1.701121e+17
+4      1.701121e+17
+           ...
+566    1.701121e+17
+567    1.700285e+17
+568             NaN
+569             NaN
+570    3.138535e+17
+Name: diaObjectId, Length: 571, dtype: float64
+
+pdf["diaObject"].apply(pd.Series)["diaObjectId"].astype("Int64").to_list()[0]
+313853533295214656
+```
+
+and if you try to open this object ID, it does not exist:
+
+![1](../img/diaObjectId_fail.png)
+
+We highly recommend NOT using Pandas if you want to use this column. Instead use low level libraries such as `pyarrow`:
+
+```python
+import pyarrow.parquet as pq
+
+# Read as a table
+table = pq.read_table("ftransfer_lsst_2026-03-26_577207")
+
+# Make a list of diaObjectId
+diaobjectids = [record["diaObjectId"] for record in table["diaObject"].to_pylist()]
+```
+
 ### Known fink-client bugs
 
 1. With version 4.0, you wouldn't have the partitioning column when reading in a dataframe. This has been corrected in 4.1.
 2. With version 7.0, files were overwritten because they were sharing the same names, hence leading to fewer alerts than expected. This has been corrected in 7.1.
 3. With version prior to 9, you could not partition by time.
+4. With version < 11, the parquet files were not following strict alert schema, leading to casting errors. 
+
 
 ## Final note
 

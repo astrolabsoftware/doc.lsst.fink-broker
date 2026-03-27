@@ -21,17 +21,17 @@ Alerts emitted by the same astronomical object share the same `diaObjectId` iden
 
     # get alert data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": "313761043604045880",
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": "313761043604045880",
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "json",
+        },
     )
 
     # Format output in a DataFrame
     if r.status_code == 200:
-      pdf = pd.read_json(io.BytesIO(r.content))
+        pdf = pd.read_json(io.BytesIO(r.content))
     ```
 
 === "curl"
@@ -71,12 +71,12 @@ You can also retrieve the data for several objects at once:
 
     # get alert data for many objects
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": ",".join(mylist),
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": ",".join(mylist),
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "json",
+        },
     )
 
     # Format output in a DataFrame
@@ -97,12 +97,12 @@ You can also choose different output format:
 
     # get alert data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": "313761043604045880",
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": "313761043604045880",
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "json",
+        },
     )
 
     # Format output in a DataFrame
@@ -119,12 +119,12 @@ You can also choose different output format:
 
     # get alert data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": "313761043604045880",
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "csv"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": "313761043604045880",
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "csv",
+        },
     )
 
     # Format output in a DataFrame
@@ -140,12 +140,12 @@ You can also choose different output format:
 
     # get alert data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": "313761043604045880",
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "parquet"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": "313761043604045880",
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "parquet",
+        },
     )
 
     # Format output in a DataFrame
@@ -161,12 +161,12 @@ You can also choose different output format:
 
     # get alert data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sources",
-      json={
-        "diaObjectId": "313761043604045880",
-        "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
-        "output-format": "votable"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sources",
+        json={
+            "diaObjectId": "313761043604045880",
+            "columns": "r:diaSourceId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "votable",
+        },
     )
 
     # VO table
@@ -184,16 +184,13 @@ The endpoint `/api/v1/objects` give access to summary information about an objec
 
     # get summary data for 313761043604045880
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/objects",
-      json={
-        "diaObjectId": "313761043604045880",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/objects",
+        json={"diaObjectId": "313761043604045880", "output-format": "json"},
     )
 
     if r.status_code == 200:
-      # dictionary with object properties
-      properties = r.json()[0]
+        # dictionary with object properties
+        properties = r.json()[0]
     ```
 
 
@@ -210,8 +207,8 @@ The endpoint `/api/v1/objects` give access to summary information about an objec
         "https://api.ztf.fink-portal.org/api/v1/objects",
         json={
             "objectId": "ZTF21aaxtctv",
-            "columns": "i:jd,i:magpsf,i:sigmapsf" # (1)!
-        }
+            "columns": "i:jd,i:magpsf,i:sigmapsf",  # (1)!
+        },
     )
     ```
 

@@ -18,11 +18,8 @@ You can enter any name (e.g. Ukyounodaibu), number (e.g. 734394), or provisonal 
 
     # get data for provisional designation 2015 BC557
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sso",
-      json={
-        "n_or_d": "2015 BC557",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sso",
+        json={"n_or_d": "2015 BC557", "output-format": "json"},
     )
 
     # Format output in a DataFrame
@@ -64,12 +61,12 @@ mylist = ["734394", "K15Bt7C", "SchUkyounodaibuwarzschilda"]
 
 # get alert data for many objects
 r = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/sources",
-  json={
-    "n_or_d": ",".join(mylist),
-    "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/sources",
+    json={
+        "n_or_d": ",".join(mylist),
+        "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
+        "output-format": "json",
+    },
 )
 
 # Format output in a DataFrame
@@ -95,11 +92,8 @@ Note that you can also choose different output format:
 
     # get data for provisional designation 2015 BC557
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sso",
-      json={
-        "n_or_d": "2015 BC557",
-        "output-format": "json"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sso",
+        json={"n_or_d": "2015 BC557", "output-format": "json"},
     )
 
     # Format output in a DataFrame
@@ -116,11 +110,8 @@ Note that you can also choose different output format:
 
     # get data for provisional designation 2015 BC557
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sso",
-      json={
-        "n_or_d": "2015 BC557",
-        "output-format": "csv"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sso",
+        json={"n_or_d": "2015 BC557", "output-format": "csv"},
     )
 
     # Format output in a DataFrame
@@ -136,11 +127,8 @@ Note that you can also choose different output format:
 
     # get data for provisional designation 2015 BC557
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sso",
-      json={
-        "n_or_d": "2015 BC557",
-        "output-format": "parquet"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sso",
+        json={"n_or_d": "2015 BC557", "output-format": "parquet"},
     )
 
     # Format output in a DataFrame
@@ -156,11 +144,8 @@ Note that you can also choose different output format:
 
     # get data for provisional designation 2015 BC557
     r = requests.post(
-      "https://api.lsst.fink-portal.org/api/v1/sso",
-      json={
-        "n_or_d": "2015 BC557",
-        "output-format": "votable"
-      }
+        "https://api.lsst.fink-portal.org/api/v1/sso",
+        json={"n_or_d": "2015 BC557", "output-format": "votable"},
     )
 
     # VO table
@@ -177,16 +162,13 @@ import requests
 
 # get summary data for 2015 BC557
 r = requests.post(
-  "https://api.lsst.fink-portal.org/TBD",
-  json={
-    "n_or_d": "2015 BC557",
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/TBD",
+    json={"n_or_d": "2015 BC557", "output-format": "json"},
 )
 
 if r.status_code == 200:
-  # dictionary with object properties
-  properties = r.json()[0]
+    # dictionary with object properties
+    properties = r.json()[0]
 ```
 
 ## Adding ephemerides from Miriade
@@ -203,12 +185,8 @@ import pandas as pd
 
 # get data for object 2015 BC557
 r = requests.post(
-  "https://api.lsst.fink-portal.org/api/v1/sso",
-  json={
-    "n_or_d": "2015 BC557",
-    "withEphem": True,
-    "output-format": "json"
-  }
+    "https://api.lsst.fink-portal.org/api/v1/sso",
+    json={"n_or_d": "2015 BC557", "withEphem": True, "output-format": "json"},
 )
 
 # Format output in a DataFrame

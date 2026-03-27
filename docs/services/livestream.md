@@ -61,7 +61,7 @@ of course, you can develop your own tools based on this one! Note Apache Avro is
 from fink_client.avro_utils import AlertReader
 
 # you can also specify one folder with several alerts directly
-r = AlertReader('alertDB/313998539674877976.avro')
+r = AlertReader("alertDB/313998539674877976.avro")
 
 # convert alert to Pandas DataFrame
 r.to_pandas()
@@ -198,8 +198,8 @@ consumer = AlertConsumer(mytopics, myconfig)
 However, if you want the old behaviour, then you need to specify it using `sasl.*` parameters:
 
 ```python
-myconfig['sasl.username'] = 'your_username'
-myconfig['sasl.password'] = None
+myconfig["sasl.username"] = "your_username"
+myconfig["sasl.password"] = None
 consumer = AlertConsumer(mytopics, myconfig)
 ```
 

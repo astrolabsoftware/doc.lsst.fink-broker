@@ -10,13 +10,14 @@ With every alert, Rubin sends 3 cutouts: one for the current observation, one fo
 
 ```python title="Obtain diaSourceId"
 import requests
+
 # Get all diaSourceId for 313761043604045880
 r = requests.post(
-    'https://api.lsst.fink-portal.org/api/v1/sources',
+    "https://api.lsst.fink-portal.org/api/v1/sources",
     json={
-        'diaObjectId': '313761043604045880',
-        'columns': 'r:diaSourceId,r:midpointMjdTai'
-    }
+        "diaObjectId": "313761043604045880",
+        "columns": "r:diaSourceId,r:midpointMjdTai",
+    },
 )
 ```
 
@@ -54,16 +55,16 @@ You can retrieve the original FITS file stored in the alert:
 
     # get data for 170050479238676547
     r = requests.post(
-        'https://api.lsst.fink-portal.org/api/v1/cutouts',
+        "https://api.lsst.fink-portal.org/api/v1/cutouts",
         json={
-            'diaSourceId': '170050479238676547',
-            'kind': 'Science',
-            'output-format': 'FITS'
-        }
+            "diaSourceId": "170050479238676547",
+            "kind": "Science",
+            "output-format": "FITS",
+        },
     )
 
     data = fits.open(io.BytesIO(r.content), ignore_missing_simple=True)
-    data.writeto('170050479238676547_cutoutScience.fits')
+    data.writeto("170050479238676547_cutoutScience.fits")
     ```
 
 and then you would read it as usual:
@@ -105,15 +106,15 @@ We provide a method to save PNG directly:
 
     # get data for 170050479238676547
     r = requests.post(
-        'https://api.lsst.fink-portal.org/api/v1/cutouts',
+        "https://api.lsst.fink-portal.org/api/v1/cutouts",
         json={
-            'diaSourceId': '170050479238676547',
-            'kind': 'Science',
-        }
+            "diaSourceId": "170050479238676547",
+            "kind": "Science",
+        },
     )
 
     image = im.open(io.BytesIO(r.content))
-    image.save('170050479238676547_cutoutScience.png')
+    image.save("170050479238676547_cutoutScience.png")
     ```
 
 ![image](../../img/170050479238676547_cutoutScience.png)
@@ -131,20 +132,20 @@ from PIL import Image as im
 
 # get data for 170050479238676547
 r = requests.post(
-    'https://api.lsst.fink-portal.org/api/v1/cutouts',
+    "https://api.lsst.fink-portal.org/api/v1/cutouts",
     json={
-        'diaSourceId': '170050479238676547',
-        'kind': 'Science', # (1)!
-        'stretch': 'sigmoid', # (2)!
-        'colormap': 'viridis', # (3)!
-        'pmin': 0.5, # (4)!
-        'pmax': 99.5, # (5)!
-        'convolution_kernel': 'gauss' # (6)!
-    }
+        "diaSourceId": "170050479238676547",
+        "kind": "Science",  # (1)!
+        "stretch": "sigmoid",  # (2)!
+        "colormap": "viridis",  # (3)!
+        "pmin": 0.5,  # (4)!
+        "pmax": 99.5,  # (5)!
+        "convolution_kernel": "gauss",  # (6)!
+    },
 )
 
 image = im.open(io.BytesIO(r.content))
-image.save('mysupercutout.png')
+image.save("mysupercutout.png")
 ```
 
 1. Science, Template, Difference
@@ -164,12 +165,12 @@ import requests
 
 # get data for 170050479238676547
 r = requests.post(
-    'https://api.lsst.fink-portal.org/api/v1/cutouts',
+    "https://api.lsst.fink-portal.org/api/v1/cutouts",
     json={
-        'diaSourceId': '170050479238676547',
-        'kind': 'Science',
-        'output-format': 'array'
-    }
+        "diaSourceId": "170050479238676547",
+        "kind": "Science",
+        "output-format": "array",
+    },
 )
 
 array = r.json()["b:cutoutScience"]
@@ -182,12 +183,8 @@ import requests
 
 # get data for 170050479238676547
 r = requests.post(
-    'https://api.lsst.fink-portal.org/api/v1/cutouts',
-    json={
-        'diaSourceId': '170050479238676547',
-        'kind': 'All',
-        'output-format': 'array'
-    }
+    "https://api.lsst.fink-portal.org/api/v1/cutouts",
+    json={"diaSourceId": "170050479238676547", "kind": "All", "output-format": "array"},
 )
 
 data = r.json()

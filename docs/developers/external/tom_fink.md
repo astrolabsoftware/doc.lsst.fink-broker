@@ -25,9 +25,9 @@ You need to declare the `FinkBroker` class in your running TOM instance. To do s
 
 ```python
 TOM_ALERT_CLASSES = [
-  'tom_alerts.brokers.alerce.ALeRCEBroker',
-  ...,
-  'tom_fink.fink.FinkBroker'
+    "tom_alerts.brokers.alerce.ALeRCEBroker",
+    ...,
+    "tom_fink.fink.FinkBroker",
 ]
 ```
 
@@ -54,17 +54,25 @@ Then add the following block to your `settings.py`:
 ```python
 ALERT_STREAMS = [
     {
-        'ACTIVE': True,
-        'NAME': 'tom_fink.alertstream.FinkAlertStream',
-        'OPTIONS': {
-            'URL': os.getenv('FINK_CREDENTIAL_URL', 'set FINK_CREDENTIAL_URL value in environment'),
-            'USERNAME': os.getenv('FINK_CREDENTIAL_USERNAME', 'set FINK_CREDENTIAL_USERNAME value in environment'),
-            'GROUP_ID': os.getenv('FINK_CREDENTIAL_GROUP_ID', 'set FINK_CREDENTIAL_GROUP_ID value in environment'),
-            'TOPIC': os.getenv('FINK_TOPIC', 'set FINK_TOPIC value in environment'),
-            'MAX_POLL_NUMBER': os.getenv("FINK_MAX_POLL_NUMBER", 1e10),
-            'TIMEOUT': os.getenv('FINK_TIMEOUT', 10),
-            'TOPIC_HANDLERS': {
-                'fink.stream': 'tom_fink.alertstream.alert_logger',
+        "ACTIVE": True,
+        "NAME": "tom_fink.alertstream.FinkAlertStream",
+        "OPTIONS": {
+            "URL": os.getenv(
+                "FINK_CREDENTIAL_URL", "set FINK_CREDENTIAL_URL value in environment"
+            ),
+            "USERNAME": os.getenv(
+                "FINK_CREDENTIAL_USERNAME",
+                "set FINK_CREDENTIAL_USERNAME value in environment",
+            ),
+            "GROUP_ID": os.getenv(
+                "FINK_CREDENTIAL_GROUP_ID",
+                "set FINK_CREDENTIAL_GROUP_ID value in environment",
+            ),
+            "TOPIC": os.getenv("FINK_TOPIC", "set FINK_TOPIC value in environment"),
+            "MAX_POLL_NUMBER": os.getenv("FINK_MAX_POLL_NUMBER", 1e10),
+            "TIMEOUT": os.getenv("FINK_TIMEOUT", 10),
+            "TOPIC_HANDLERS": {
+                "fink.stream": "tom_fink.alertstream.alert_logger",
             },
         },
     },
