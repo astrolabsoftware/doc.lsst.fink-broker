@@ -117,7 +117,7 @@ We provide a method to save PNG directly:
     wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547_cutoutScience&kind=Science" -O 170050479238676547_cutoutScience.png
     ```
 
-![image](../../img/170050479238676547_cutoutScience.png)
+![image](../../img/169936132527095844_cutoutScience.png)
 
 !!! tip "Display in Jupyter Notebook"
     In a notebook, you would use `display(image)` to display the cutout in the page. If it is too small, resize it using `image.resize((height, width))`.
