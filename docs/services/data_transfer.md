@@ -117,6 +117,17 @@ fink_datatransfer \
 
 Alert data will be consumed and stored on disk as parquet files. You can easily read these alerts using Pyarrow, or Pandas: 
 
+=== "Polars"
+    Polars is an efficient replacement for Pandas, both in term of speed and data type management.
+
+    ```python
+    import polars as pl
+
+    pdf = pl.read_parquet("ftransfer_lsst_2026-03-27_300346/")
+    ```
+
+    Beware, if you want transform this table into a Pandas DataFrame, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
+
 === "Pyarrow"
     ```python
     import pyarrow.parquet as pq
@@ -125,7 +136,7 @@ Alert data will be consumed and stored on disk as parquet files. You can easily 
     table = pq.read_table("ftransfer_lsst_2026-03-27_300346/", schema=arrow_schema)
     ```
 
-    Beware, if you want transform this table into a Pandas DataFrame, you will likely have issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
+    Beware, if you want transform this table into a Pandas DataFrame, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
 
 === "Pandas"
     !!! warning "diaObjectId and type inference"
@@ -189,20 +200,28 @@ fink_datatransfer \
     --verbose
 ```
 
-Note that we provide tools to read Avro file if you do not have a reader available:
+You can easily read data using Polars, or alternatively the client provides simple tools to read Avro file if you do not have a reader available:
 
-```python
-from fink_client.avro_utils import AlertReader
+=== "Polars"
+    ```python
+    import polars as pl
 
-r = AlertReader("ftransfer_lsst_2026-03-27_300346/")
+    pdf = pl.read_avro("ftransfer_lsst_2026-03-27_300346/")
+    ```
 
-# Get a list of `size` alerts
-alerts = r.to_list(size=1)
+=== "fink-client"
+    ```python
+    from fink_client.avro_utils import AlertReader
 
-# Each alert is a dictionary
-alerts[0]["diaObject"]["diaObjectId"]
-170028510532337794
-```
+    r = AlertReader("ftransfer_lsst_2026-03-27_300346/")
+
+    # Get a list of `size` alerts
+    alerts = r.to_list(size=1)
+
+    # Each alert is a dictionary
+    alerts[0]["diaObject"]["diaObjectId"]
+    170028510532337794
+    ```
 
 ### Note on multiprocessing
 
@@ -299,17 +318,65 @@ and if you try to open this object ID, it does not exist:
 
 ![1](../img/diaObjectId_fail.png)
 
-We highly recommend NOT using Pandas if you want to use this column. Instead use low level libraries such as `pyarrow`:
+We highly recommend NOT using Pandas if you want to use this column. Instead use Polars or low level libraries such as Pyarrow:
 
-```python
-import pyarrow.parquet as pq
+=== "Polars"
+    No type issue at all, `diaObjectId` correctly decoded:
 
-# Read as a table
-table = pq.read_table("ftransfer_lsst_2026-03-26_577207")
+    ```python
+    import polars as pl
 
-# Make a list of diaObjectId
-diaobjectids = [record["diaObjectId"] for record in table["diaObject"].to_pylist()]
-```
+    # Read as DataFrame
+    pdf = pl.read_parquet("ftransfer_lsst_2026-03-26_577207")
+    shape: (1_997, 29)
+    ┌────────────────────┬──────────────────────┬─────────────────────┬─────────────────────────────────┬───┬──────┬───────┬─────┬─────────────────────┐
+    │ diaSourceId        ┆ observation_reason   ┆ target_name         ┆ diaSource                       ┆ … ┆ year ┆ month ┆ day ┆ tns_type_recomputed │
+    │ ---                ┆ ---                  ┆ ---                 ┆ ---                             ┆   ┆ ---  ┆ ---   ┆ --- ┆ ---                 │
+    │ i64                ┆ str                  ┆ str                 ┆ struct[98]                      ┆   ┆ i32  ┆ i32   ┆ i32 ┆ str                 │
+    ╞════════════════════╪══════════════════════╪═════════════════════╪═════════════════════════════════╪═══╪══════╪═══════╪═════╪═════════════════════╡
+    │ 170112044651511875 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044651511875,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044504187091 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044504187091,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044549275716 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044549275716,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112073842295613 ┆ template_blob_i_33.0 ┆ lowdust             ┆ {170112073842295613,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112073817128991 ┆ template_blob_i_33.0 ┆ lowdust             ┆ {170112073817128991,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ …                  ┆ …                    ┆ …                   ┆ …                               ┆ … ┆ …    ┆ …     ┆ …   ┆ …                   │
+    │ 170112044547178517 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044547178517,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044701319264 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044701319264,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044555042880 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044555042880,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044700794961 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044700794961,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    │ 170112044511002632 ┆ ddf_cosmos           ┆ ddf_cosmos, lowdust ┆ {170112044511002632,2026030900… ┆ … ┆ 2026 ┆ 3     ┆ 10  ┆ Unknown             │
+    └────────────────────┴──────────────────────┴─────────────────────┴─────────────────────────────────┴───┴──────┴───────┴─────┴─────────────────────┘
+
+    # Extract the `diaObjectId` series
+    pdf.unnest("diaSource", separator="::")["diaSource::diaObjectId"]
+    shape: (1_997,)
+    Series: 'diaSource::diaObjectId' [i64]
+    [
+        313853532989554799
+        170028510483579739
+        0
+        170050533224612532
+        170112073817128991
+        …
+        170112044547178517
+        170028510630903956
+        0
+        170028500610187383
+        0
+    ]
+    ```
+
+=== "Pyarrow"
+    Decode `diaObjectId` separately:
+    ```python
+    import pyarrow.parquet as pq
+
+    # Read as a table
+    table = pq.read_table("ftransfer_lsst_2026-03-26_577207")
+
+    # Make a list of diaObjectId
+    diaobjectids = [record["diaObjectId"] for record in table["diaObject"].to_pylist()]
+    ```
 
 ### Known fink-client bugs
 
