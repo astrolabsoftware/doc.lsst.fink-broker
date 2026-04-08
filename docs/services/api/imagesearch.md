@@ -31,21 +31,6 @@ last_diaSOurceId = r.json()[0]["r:diaSourceId"]
 
 You can retrieve the original FITS file stored in the alert:
 
-=== "curl"
-
-    ```bash
-    curl -H "Content-Type: application/json" \
-        -X POST -d \
-        '{"diaSourceId":"170050479238676547", "kind":"Science", "output-format": "FITS"}' \
-        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.fits
-    ```
-
-=== "wget"
-
-    ```bash
-    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547&kind=Science&output-format=FITS" -O 170050479238676547_cutoutScience.fits
-    ```
-
 === "Python"
 
     ```python
@@ -67,6 +52,21 @@ You can retrieve the original FITS file stored in the alert:
     data.writeto("170050479238676547_cutoutScience.fits")
     ```
 
+=== "curl"
+
+    ```bash
+    curl -H "Content-Type: application/json" \
+        -X POST -d \
+        '{"diaSourceId":"170050479238676547", "kind":"Science", "output-format": "FITS"}' \
+        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.fits
+    ```
+
+=== "wget"
+
+    ```bash
+    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547&kind=Science&output-format=FITS" -O 170050479238676547_cutoutScience.fits
+    ```
+
 and then you would read it as usual:
 
 ```python
@@ -80,22 +80,6 @@ with fits.open("170050479238676547_cutoutScience.fits") as hdu:
 ### PNG
 
 We provide a method to save PNG directly:
-
-=== "curl"
-
-    ```bash
-    curl -H "Content-Type: application/json" \
-        -X POST -d \
-        '{"diaSourceId":"170050479238676547", "kind":"Science"}' \
-        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.png
-    ```
-
-=== "wget"
-
-    ```bash
-    # you can also specify parameters in the URL, e.g. with wget:
-    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547_cutoutScience&kind=Science" -O 170050479238676547_cutoutScience.png
-    ```
 
 === "Python"
 
@@ -115,6 +99,22 @@ We provide a method to save PNG directly:
 
     image = im.open(io.BytesIO(r.content))
     image.save("170050479238676547_cutoutScience.png")
+    ```
+
+=== "curl"
+
+    ```bash
+    curl -H "Content-Type: application/json" \
+        -X POST -d \
+        '{"diaSourceId":"170050479238676547", "kind":"Science"}' \
+        https://api.lsst.fink-portal.org/api/v1/cutouts -o 170050479238676547_cutoutScience.png
+    ```
+
+=== "wget"
+
+    ```bash
+    # you can also specify parameters in the URL, e.g. with wget:
+    wget "https://api.lsst.fink-portal.org/api/v1/cutouts?diaSourceId=170050479238676547_cutoutScience&kind=Science" -O 170050479238676547_cutoutScience.png
     ```
 
 ![image](../../img/170050479238676547_cutoutScience.png)
