@@ -1,6 +1,6 @@
 # Fink Data Transfer
 
-_date 27/03/2026_
+_date 08/04/2026_
 
 This manual has been tested for `fink-client` version 11.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
