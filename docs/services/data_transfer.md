@@ -2,7 +2,7 @@
 
 _date 08/04/2026_
 
-This manual has been tested for `fink-client` version 11.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
+This manual has been tested for `fink-client` version 11.1 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
 !!! info "From ZTF to LSST"
     ZTF users need to migrate their fink-client to at least version 10.0, and authenticate again.
