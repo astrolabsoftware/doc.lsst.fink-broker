@@ -76,6 +76,9 @@ The number of alerts in the gauge will update as you select Fink Filters or bloc
     3. The custom filters (SQL) are not taken into account when estimating the number of alerts.
     4. If a catalog has been uploaded, the results of the crossmatch is not known in advance.
 
+!!! note "Note on catalog visibility"
+    Uploaded catalogs remain secluded for all practical purpose and will not be exploited scientifically by anyone. They are stored on our system during the operation, and they are automatically deleted after 24h. During this time, only engineers have access to it   exclusively for debugging purposes and to assist users if need be.
+
 ### Selecting alert content
 
 Finally you can choose the content of the alerts to be returned. You have several types of options:
