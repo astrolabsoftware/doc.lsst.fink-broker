@@ -1,8 +1,8 @@
 # Fink Data Transfer
 
-_date 08/04/2026_
+_date 16/04/2026_
 
-This manual has been tested for `fink-client` version 11.1 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
+This manual has been tested for `fink-client` version 11.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
 !!! info "From ZTF to LSST"
     ZTF users need to migrate their fink-client to at least version 10.0, and authenticate again.
@@ -40,19 +40,43 @@ To ease the consuming step, the users are recommended to use the [fink-client :l
 ## Defining your query
 
 To start the service, connect to [https://lsst.fink-portal.org/download :lucide-external-link:](https://lsst.fink-portal.org/download){target="blank_"}. The construction of the query is a guided process.
-First, if you have a configuration file, you can upload it. If you do not know what it is, no worry, we will see it later. Then jump on the next page to choose the dates for which you would like to get alert data using the calendar. You can choose multiple consecutive dates. Then go on the next page:
+First, if you have a configuration file, you can upload it. If you do not know what it is, no worry, we will see it later. Then jump on the next page to choose the dates for which you would like to get alert data using the calendar. You can choose multiple consecutive dates. 
+
+### Reducing the number of alerts
+
+After choosing the dates, go on the next page:
 
 ![2](../img/download_filters.png)
 
-For LSST, you can further filter the data in three ways:
+You can further filter the data in three ways:
 
-1. You can select one or more user-defined tag(s) (the Fink Filters) or blocks. This is useful if you want to replay an analysis on a previous night.
-2. You can upload a catalog of sources for crossmatch.
-3. You can also impose extra conditions on the alerts you want to retrieve based on their content. You will simply specify the name of the parameter with the condition (SQL syntax). If you have several conditions, put one condition per line, ending with semi-colon. Example of valid conditions are shown in the interface. Note that when you start typing a nested field in the schema, a dropdown menu will appear with available fields. See the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} for more information about available tags, block, and fields.
+1. Select one or more user-defined tag(s) (the Fink Filters) or blocks. This is useful if you want to replay an analysis on a previous night.
+2. Upload a catalog of sources for crossmatch.
+3. Impose extra conditions on the alerts you want to retrieve based on their content. You will simply specify the name of the parameter with the condition (SQL syntax). If you have several conditions, put one condition per line, ending with semi-colon. Example of valid conditions are shown in the interface. Note that when you start typing a nested field in the schema, a dropdown menu will appear with available fields. See the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} for more information about available tags, block, and fields.
 
 Note that if you double click on filters or blocks, you will apply its negation:
 
 ![2](../img/download_filters_explained.png)
+
+The number of alerts in the gauge will update as you select Fink Filters or blocks:
+
+<figure markdown="span">
+  ![Image title](../img/datatransfer_gauge_full.png){ width='45%' align=left }
+  ![Image title](../img/datatransfer_gauge_filtered.png){ width='45%' align=right}
+
+  <figcaption markdown="span">Left: total number of alerts for a night. Right: Number of alerts after applying the `b_is_solar_system` block.</figcaption>
+</figure>
+
+!!! warning "Estimating the filtered alert number" 
+
+    There are some caveats to know:
+
+    1. filter and block yields are statistical, computed over a month of data. So the filtered numbers are only representative.
+    2. The filter yields are applied serially, without taking into account possible overlaps.
+    3. The custom filters (SQL) are not taken into account when estimating the number of alerts.
+    4. If a catalog has been uploaded, the results of the crossmatch is not known in advance.
+
+### Selecting alert content
 
 Finally you can choose the content of the alerts to be returned. You have several types of options:
 
@@ -62,7 +86,17 @@ Finally you can choose the content of the alerts to be returned. You have severa
 
 Alert schema can be again accessed directly from the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}. Note that you can apply filters (e.g. tags, extra conditions, etc.) on any alert fields regardless of the final alert content as the filtering is done prior to the output schema. 
 
-As you select fields to be transfered, the gauge on the right will be updated with an estimation of the total to be transfered. You will find an estimation of each (main) section in an alert packet in the following table:
+As you select fields to be transfered, the gauge on the right will be updated with an estimation of the total to be transfered:
+
+<figure markdown="span">
+  ![Image title](../img/datatransfer_gauge_size_full.png){ width='30%' align=left }
+  ![Image title](../img/datatransfer_gauge_size_medium.png){ width='30%' align=left }
+  ![Image title](../img/datatransfer_gauge_size_light_static.png){ width='30%' align=right }
+
+  <figcaption markdown="span">Left: total volume in gigabytes to transfer for a night (Full packet option). Center: Same with the Medium packet option. Right: Same with the Light static packet option.</figcaption>
+</figure>
+
+This is a statistical estimation based on data taken in April 2026. You will find an estimation of each (main) section in an alert packet in the following table:
 
 |Content|median size| comments |
 |-|-|-|
@@ -77,19 +111,22 @@ As you select fields to be transfered, the gauge on the right will be updated wi
 |`ssSource`| <0.5KB | Only available for solar system object alerts |
 |Fink added values| 1KB | labels from crossmatch, machine learning and deep learning scores, flags, etc. |
 
-These numbers are rough estimates made on the April 10th observing night data, and they depend on the alert history, but it helps to build the intuition about what really weights. See this [issue](https://github.com/astrolabsoftware/lsst.fink-portal.org/issues/91) for more detailed information.
+!!! warning "Estimating the data size"
+
+    These numbers depend on the alert history size and cutout size, and the gauge should be seen as a rough guide. See this [issue :lucide-external-link:](https://github.com/astrolabsoftware/lsst.fink-portal.org/issues/91){target="blank_"} for more detailed information.
+
+### Submitting the request
 
 Once you have filled all parameters, go to the last iteration, and review all parameters before hitting the submission button:
 
 ![1](../img/download_final.png)
 
-The number of alert estimation is only the number of alerts between the chosen dates, and it does not take into account the number of alerts per night, the number of alerts filtered per tags and blocks, and the extra conditions (that could further reduce the number of alerts). However we provide an estimation of the size of the data to be transfered based on the content. You can update your parameters if need be, the estimations will be updated in real-time.
-
 Before submission, download your configuration file. Next time you launch a job, you will be able to upload it to retrieve your parameters!
 
 ![1](../img/configuration_data_transfer.png)
 
-Note that although we log the catalog filename, you will have to upload it again (we do not keep a copy of it).
+!!! tip "Catalog upload"
+    Note that although we log the catalog filename, you will have to upload it again (we do not keep a copy of it).
 
 After submission, your job will be triggered on the Fink Apache Spark cluster, and a topic name will be generated. Keep this topic name with you, you will need it to get the data. Details about the progress will be automatically displayed on the page.
 
