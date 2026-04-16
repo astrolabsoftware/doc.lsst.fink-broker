@@ -46,43 +46,40 @@ First, if you have a configuration file, you can upload it. If you do not know w
 
 For LSST, you can further filter the data in three ways:
 
-1. You can select one or more user-defined tag(s) (the Fink Filters). This is useful if you want to replay an analysis on a previous night.
-2. You can select one or more user-defined block(s). Blocks are useful set of conditions.
-3. Optionally, you can also impose extra conditions on the alerts you want to retrieve based on their content. You will simply specify the name of the parameter with the condition (SQL syntax). If you have several conditions, put one condition per line, ending with semi-colon. Example of valid conditions:
+1. You can select one or more user-defined tag(s) (the Fink Filters) or blocks. This is useful if you want to replay an analysis on a previous night.
+2. You can upload a catalog of sources for crossmatch.
+3. You can also impose extra conditions on the alerts you want to retrieve based on their content. You will simply specify the name of the parameter with the condition (SQL syntax). If you have several conditions, put one condition per line, ending with semi-colon. Example of valid conditions are shown in the interface. Note that when you start typing a nested field in the schema, a dropdown menu will appear with available fields. See the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} for more information about available tags, block, and fields.
 
-```sql
--- Example block 1
--- Alerts with flux above 13500 nJy (< mag 21) and
--- at least 3 detections
-diaSource.psfFlux > 13500;
-diaObject.nDiaSources > 3;
+Note that if you double click on filters or blocks, you will apply its negation:
 
--- Example block 2: Filter on magnitude and specific band
-diaSource.band = 'g';
-31.4 - 2.5 * LOG10(diaSource.scienceFlux) < 21;
+![2](../img/download_filters_explained.png)
 
--- Example block 3: Using a combination of fields (magnitude difference between science and template)
-2.5 * LOG10(diaSource.psfFlux / diaSource.templateFlux) > 0.5;
+Finally you can choose the content of the alerts to be returned. You have several types of options:
 
--- Example block 3: Filtering on ML scores
-clf.snnSnVsOthers_score > 0.5;
+1. Predefined schemas: Full packet, Medium Packet, Light static packet and Light SSO packet.
+2. Root fields: `diaSource`, `prvDiaSources`, etc. This will take all fields from a section.
+3. Any field you want: instead of the pre-defined schemas from above, you can also choose to   download only the fields of interest for you. Prefer this option if you know what you want     (and this will reduce greatly the volume of data to transfer).
 
--- Example block 4: Filtering on catalog output
-xm.tns_type IN ('SN Ia', 'SN II');
+Alert schema can be again accessed directly from the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}. Note that you can apply filters (e.g. tags, extra conditions, etc.) on any alert fields regardless of the final alert content as the filtering is done prior to the output schema. 
 
--- Example block 5: Only classified objects in SIMBAD and Gaia DR3
-pred.is_cataloged;
-```
+As you select fields to be transfered, the gauge on the right will be updated with an estimation of the total to be transfered. You will find an estimation of each (main) section in an alert packet in the following table:
 
-Note that when you start typing a nested field in the schema, a dropdown menu will appear with available fields. See the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"} for more information about available tags, block, and fields.
+|Content|median size| comments |
+|-|-|-|
+|Full packet (static)| 176KB | All Fink & LSST fields for static alerts |
+|Full packet (SSO)| 60KB | All Fink & LSST fields for SSO alerts |
+|Cutouts| 58KB | 3 cutouts. Size is minimum 30x30 pixels. |
+|`prvDiaSources`| 116KB | History size varies from 0 to 1000+ elements |
+|`prvDiaForcedSources`| 1KB | History size varies from 0 to 1000+ elements. Note that forced photometry started in February, and was reset in March by Rubin (hence smaller size than photometry history) |
+|`diaSource`| 0.5KB | Contains photometry, astrometry, timings, flags, etc. |
+|`diaObject`| <0.5KB | Only available for static alerts |
+|`mpc_orbits`| <0.5KB | Only available for solar system object alerts |
+|`ssSource`| <0.5KB | Only available for solar system object alerts |
+|Fink added values| 1KB | labels from crossmatch, machine learning and deep learning scores, flags, etc. |
 
-Finally you can choose the content of the alerts to be returned. You have four types of content:
-1. Light packet: lightweight (a few KB/alerts), this option transfers only necessary fields for working with lightcurves plus all Fink added values. Prefer this option to start.
-2. Medium packet: original LSST alerts plus all Fink added values, but without cutouts.
-4. Full packet: original LSST alerts plus all Fink added values.
-4. Any fields you want: instead of the pre-defined schema from above, you can also choose to download only the fields of interest for you. Prefer this option if you know what you want (and this will reduce greatly the volume of data to transfer).
+These numbers are rough estimates made on the April 10th observing night data, and they depend on the alert history, but it helps to build the intuition about what really weights. See this [issue](https://github.com/astrolabsoftware/lsst.fink-portal.org/issues/91) for more detailed information.
 
-Alert schema can be again accessed directly from the [schema page :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}. Note that you can apply filters (e.g. tags, extra conditions, etc.) on any alert fields regardless of the final alert content as the filtering is done prior to the output schema. Once you have filled all parameters, go to the last iteration, and review all parameters before hitting the submission button:
+Once you have filled all parameters, go to the last iteration, and review all parameters before hitting the submission button:
 
 ![1](../img/download_final.png)
 
@@ -91,6 +88,8 @@ The number of alert estimation is only the number of alerts between the chosen d
 Before submission, download your configuration file. Next time you launch a job, you will be able to upload it to retrieve your parameters!
 
 ![1](../img/configuration_data_transfer.png)
+
+Note that although we log the catalog filename, you will have to upload it again (we do not keep a copy of it).
 
 After submission, your job will be triggered on the Fink Apache Spark cluster, and a topic name will be generated. Keep this topic name with you, you will need it to get the data. Details about the progress will be automatically displayed on the page.
 
