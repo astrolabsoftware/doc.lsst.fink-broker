@@ -114,7 +114,28 @@ fink_datatransfer \
     --verbose
 ```
 
-Alert data will be consumed and stored on disk as parquet files. You can easily read these alerts using Pyarrow, or Pandas: 
+Alert data will be consumed and stored on disk as parquet files. You can easily read these alerts using PyArrow, or Pandas: 
+
+=== "Pandas"
+    !!! warning "diaObjectId and type inference"
+        If you are using Pandas to read alerts downloaded with fink-client version < 11, we highly recommend to read the `Troubleshooting` section of this manual, as the values for `diaObjectId` can be wrongly decoded due to bad type inference.
+
+    ```python
+    import pandas as pd
+
+    # dtype_backend="pyarrow" prevents wrong type inference
+    pdf = pd.read_parquet("ftransfer_lsst_2026-03-27_300346/", dtype_backend="pyarrow")
+    ```
+
+=== "Nested-Pandas"
+    ```python
+    import nested_pandas as npd
+
+    # Pandas-compatible data frame
+    df = npd.read_parquet("ftransfer_lsst_2026-03-27_300346/")
+    ```
+
+    [Nested-Pandas](https://nested-pandas.readthedocs.io/) extends Pandas to provide better tooling for working with nested data frames, such as "prvDiaSource" and "prvDiaForcedSources" columns.
 
 === "Polars"
     Polars is an efficient replacement for Pandas, both in term of speed and data type management.
@@ -125,9 +146,9 @@ Alert data will be consumed and stored on disk as parquet files. You can easily 
     pdf = pl.read_parquet("ftransfer_lsst_2026-03-27_300346/")
     ```
 
-    Beware, if you want transform this table into a Pandas DataFrame, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
+    Beware, if you want to transform this table into a Pandas DataFrame, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
 
-=== "Pyarrow"
+=== "PyArrow"
     ```python
     import pyarrow.parquet as pq
 
@@ -135,20 +156,7 @@ Alert data will be consumed and stored on disk as parquet files. You can easily 
     table = pq.read_table("ftransfer_lsst_2026-03-27_300346/", schema=arrow_schema)
     ```
 
-    Beware, if you want transform this table into a Pandas DataFrame, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
-
-=== "Pandas"
-    !!! warning "diaObjectId and type inference"
-        If you are using Pandas to read alerts, we highly recommend to read the `Troubleshooting` section of this manual, as the values for `diaObjectId` can be wrongly decoded due to bad type inference.
-
-    ```python
-    import pandas as pd
-    import pyarrow.parquet as pq
-
-    # Schema is optional, but highly recommended
-    arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-27_300346.metadata")
-    pdf = pd.read_parquet("ftransfer_lsst_2026-03-27_300346/", schema=arrow_schema)
-    ```
+    Beware, if you want to transform this table into a Pandas DataFrame with `to_pandas`, you will likely have type issues with the column `diaObjectId`. See the `Troubleshooting` section of this manual.
 
 You can stop the poll by hitting `CTRL+C` on your keyboard, and resume later. The poll will restart from the last offset, namely you will not have duplicate. In case you want to start polling data from the beginning of the stream, you can use the `--restart_from_beginning` option:
 
@@ -171,7 +179,7 @@ Avro schema can be inspected using e.g.:
 cat filename.json | jq
 ```
 
-and Arrow schema using pyarrow:
+and Arrow schema using PyArrow:
 
 ```python
 import pyarrow.parquet as pq
@@ -286,14 +294,12 @@ Because LSST is not filling all fields, if you try to read using Pandas directly
 ArrowNotImplementedError: Unsupported cast from double to null using function cast_null
 ```
 
-This has been fixed in v11, although the column `diaObjectId` is still subject to wrong cast if using Pandas. The reason is that this field can be a long integer, or integer, or null... This is too much for type inference performed by Pandas, even when specifying the explicit arrow schema: 
+This has been fixed in v11, although the column `diaObjectId` is still subject to wrong cast if using Pandas-native data types. The reason is that this field can be a long integer, or integer, or null... Please use PyArrow data types when reading parquet files, so no harmful data casting is happening.
 
 ```python
 import pandas as pd
-import pyarrow.parquet as pq
 
-arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-26_577207.metadata")
-pdf = pd.read_parquet("ftransfer_lsst_2026-03-26_577207/", schema=arrow_schema)
+pdf = pd.read_parquet("ftransfer_lsst_2026-03-26_577207/")
 
 pdf["diaObject"].apply(pd.Series)["diaObjectId"]
 0      3.138535e+17
@@ -317,7 +323,57 @@ and if you try to open this object ID, it does not exist:
 
 ![1](../img/diaObjectId_fail.png)
 
-We highly recommend NOT using Pandas if you want to use this column. Instead use Polars or low level libraries such as Pyarrow:
+We highly recommend updating fink-client to version 11 or later, and either use Pandas with [PyArrow types](https://pandas.pydata.org/docs/user_guide/pyarrow.html) or other library, such as Polars, PyArrow or Nested-Pandas:
+
+=== "Pandas with PyArrow dtypes"
+    `dtype_backend="pyarrow"` should be used so no data casting is happening:
+
+    ```python
+    import pandas as pd
+
+    df = pd.read_parquet("ftransfer_lsst_2026-04-10_814386", dtype_backend="pyarrow")
+    df["diaSource"].struct.field("diaSourceId")
+
+    0     170028494251622421
+    1     170028491821023256
+                 ...
+    94    170028499653361723
+    95    170028496010084387
+    Name: diaSourceId, Length: 96, dtype: int64[pyarrow]
+    ```
+
+=== "Nested-Pandas"
+    [Nested-Pandas](https://nested-pandas.readthedocs.io/en/latest/) is an extension for Pandas, which provides tooling useful for light curve analysis.
+    
+    ```python
+    import nested_pandas as npd
+    import numpy as np
+    import pandas as pd
+
+    # Uses PyArrow types when reading parquet
+    df = npd.read_parquet("ftransfer_lsst_2026-04-10_814386")
+    # Loop over previous DIA-source light curves and append current source:
+    for _idx, row in df.head(5).iterrows():
+        # Python dict
+        source = row["diaSource"]
+        # Nested-Pandas automatically represents nested structure as a DataFrame
+        prv_sources = row["prvDiaSources"]
+        all_sources = pd.concat([prv_sources, pd.DataFrame([source])], ignore_index=True)
+        # Get peak flux per band using Pandas' groupy
+        max_flux_per_band = all_sources[["band", "psfFlux"]].groupby("band").max()
+        # Round values and convert to a Python dict
+        max_flux_dict = max_flux_per_band.round(2).to_dict()["psfFlux"]
+        print(
+            f"diaSourceId {row["diaSource"]["diaSourceId"]}"
+            f" --- Peak PSF Flux {max_flux_dict}"
+        )
+
+    diaSourceId 170028494251622421 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 132426.2}
+    diaSourceId 170028491821023256 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 106307.88}
+    diaSourceId 170028495499427903 --- Peak PSF Flux {'g': 68751.32, 'i': 62620.46, 'r': 58776.86, 'z': 52867.45}
+    diaSourceId 170028500167688200 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 113387.5, 'z': 133318.11}
+    diaSourceId 170028497082777638 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 112159.72, 'z': 133318.11}
+    ```
 
 === "Polars"
     No type issue at all, `diaObjectId` correctly decoded:
@@ -365,7 +421,7 @@ We highly recommend NOT using Pandas if you want to use this column. Instead use
     ]
     ```
 
-=== "Pyarrow"
+=== "PyArrow"
     Decode `diaObjectId` separately:
     ```python
     import pyarrow.parquet as pq
@@ -375,6 +431,11 @@ We highly recommend NOT using Pandas if you want to use this column. Instead use
 
     # Make a list of diaObjectId
     diaobjectids = [record["diaObjectId"] for record in table["diaObject"].to_pylist()]
+
+    # Tranform to Pandas keeping PyArrow types to prevent data corruption
+    import pandas as pd
+
+    df = table.to_pandas(types_mapper=pd.ArrowDtype)
     ```
 
 ### Known fink-client bugs
