@@ -57,16 +57,16 @@ import requests
 import pandas as pd
 
 # ID as string
-mylist = ["734394", "K15Bt7C", "SchUkyounodaibuwarzschilda"]
+mylist = ["734394", "K15Bt7C", "Schwarzschilda", "Ukyounodaibu"]
 
 # get alert data for many objects
 r = requests.post(
-    "https://api.lsst.fink-portal.org/api/v1/sources",
-    json={
-        "n_or_d": ",".join(mylist),
-        "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
-        "output-format": "json",
-    },
+  "https://api.lsst.fink-portal.org/api/v1/sso",
+  json={
+    "n_or_d": ",".join(mylist),
+    "columns": "r:midpointMjdTai,r:psfFlux,r:psfFluxErr,r:ra,r:dec",
+    "output-format": "json"
+  }
 )
 
 # Format output in a DataFrame
