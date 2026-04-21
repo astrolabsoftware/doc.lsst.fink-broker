@@ -270,6 +270,106 @@ You can easily read data using Polars, or alternatively the client provides simp
     170028510532337794
     ```
 
+## Notes on working with nested structures
+
+Alert data contains nested structures, such as `prvDiaSources` and `prvDiaForcedSources`. You can use [Nested-Pandas](https://nested-pandas.readthedocs.io/en/latest/) to easily manipulate these nested structures.
+
+For example, you can loop over alerts, and for each alert previous DIA-sources are simply represented as a DataFrame:
+
+```python
+import nested_pandas as npd
+import numpy as np
+import pandas as pd
+
+# Similar to Pandas, but always uses PyArrow types, so no data casting is happening
+df = npd.read_parquet("ftransfer_lsst_2026-04-10_814386")
+# Loop over previous DIA-source light curves and append current source:
+for _idx, row in df.head(5).iterrows():
+    # Python dict
+    source = row["diaSource"]
+    # Nested-Pandas automatically represents nested structure as a DataFrame
+    prv_sources = row["prvDiaSources"]
+    all_sources = pd.concat([prv_sources, pd.DataFrame([source])], ignore_index=True)
+    # Get peak flux per band using Pandas' groupy
+    max_flux_per_band = all_sources[["band", "psfFlux"]].groupby("band").max()
+    # Round values and convert to a Python dict
+    max_flux_dict = max_flux_per_band.round(2).to_dict()["psfFlux"]
+    print(
+        f"diaSourceId {row["diaSource"]["diaSourceId"]}"
+        f" --- Peak PSF Flux {max_flux_dict}"
+    )
+```
+
+```
+diaSourceId 170028494251622421 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 132426.2}
+diaSourceId 170028491821023256 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 106307.88}
+diaSourceId 170028495499427903 --- Peak PSF Flux {'g': 68751.32, 'i': 62620.46, 'r': 58776.86, 'z': 52867.45}
+diaSourceId 170028500167688200 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 113387.5, 'z': 133318.11}
+diaSourceId 170028497082777638 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 112159.72, 'z': 133318.11}
+```
+
+We can also combine alerts corresponding to the same `diaObjectId` to get a new nested column, which contains all sources for a given object:
+```python
+import nested_pandas as npd
+
+df = npd.read_parquet(
+    "ftransfer_lsst_2026-04-10_814386",
+    # Just load the source information to save time and memory
+    columns=["diaSource"]
+)
+# Unnest the only diaSource column to get all its fields as top-level columns
+# Uses standard Pandas `.struct` "accessor"
+df = df["diaSource"].struct.explode()
+# Collect all sources for a given diaObjectId into a new "nested" column "sources"
+nf = npd.NestedFrame.from_flat(
+    df,
+    # New index column
+    on="diaObjectId",
+    # Columns to leave unnested, none in this case
+    base_columns=[],
+    name="sources",
+)
+
+# Keep sources with flux/error > 10
+# "." is used as a separator between the nested column name and the sub-column (field)
+nf = nf.query("sources.psfFlux / sources.psfFluxErr > 10")
+# Convert fluxes to magnitudes
+nf["sources.psfMag"] = 31.4 - 2.5 * np.log10(nf["sources.psfFlux"])
+nf["sources.psfMagErr"] = 2.5 / np.log(10) * nf["sources.psfFluxErr"] / nf["sources.psfFlux"]
+
+# Sort by date
+nf = nf.sort_values("sources.midpointMjdTai")
+
+# Get the largest magnitude slope between two consecutive sources
+def max_mag_slope(row):
+    # row is a Python dict, keys are sub-column names, values are numpy arrays
+    diff_mag = np.diff(row["sources.psfMag"])
+    diff_time = np.diff(row["sources.midpointMjdTai"])
+    pairwise_magerr_sums = np.hypot(
+        row["sources.psfMagErr"][:-1], row["sources.psfMagErr"][1:]
+    )
+    relaxed_diff_mag = diff_mag - pairwise_magerr_sums
+    slopes = relaxed_diff_mag / diff_time
+    return np.max(slopes)
+    
+# Run user function over rows, r-band only
+nf = nf.query("sources.band == 'r'").map_rows(
+    max_mag_slope,
+    # Column name for the output
+    output_names="max_mag_slope_r",
+    # Keep existing columns
+    append_columns=True,
+)
+nf
+```
+
+```
+                                                              sources  max_mag_slope_r
+diaObjectId
+313761043604045880  [{diaSourceId: 170028496792846394, visit: 2026...        17.797074
+314051320305156133  [{diaSourceId: 170028497625940038, visit: 2026...         1.632043
+```
+
 ### Note on multiprocessing
 
 From `fink-client` version 7.0, we have introduced the functionality of simultaneous downloading from multiple partitions through the implementation of multi-processing technology, which is an approach that takes advantage of modern hardware resources to run multiple tasks in parallel.
@@ -372,47 +472,33 @@ We highly recommend updating fink-client to version 11 or later, and either use 
     import pandas as pd
 
     df = pd.read_parquet("ftransfer_lsst_2026-04-10_814386", dtype_backend="pyarrow")
-    df["diaSource"].struct.field("diaSourceId")
+    # Use .struct "accessor" to work with nested structures
+    df["diaSource"].struct.field("diaObjectId")
 
-    0     170028494251622421
-    1     170028491821023256
+    0     313761043604045880
+    1     313761043604045880
                  ...
-    94    170028499653361723
-    95    170028496010084387
-    Name: diaSourceId, Length: 96, dtype: int64[pyarrow]
+    94    314051320305156133
+    95    313761043604045880
+    Name: diaObjectId, Length: 96, dtype: int64[pyarrow]
     ```
 
 === "Nested-Pandas"
-    [Nested-Pandas](https://nested-pandas.readthedocs.io/en/latest/) is an extension for Pandas, which provides tooling useful for light curve analysis.
+    [Nested-Pandas](https://nested-pandas.readthedocs.io/en/latest/) provides a parquet reader function, which always produces a Pandas DataFrame with PyArrow types, so no data casting is happening:
     
     ```python
     import nested_pandas as npd
-    import numpy as np
-    import pandas as pd
 
-    # Uses PyArrow types when reading parquet
+    # Same code as for Pandas, but no need in `dtype_backend` argument
     df = npd.read_parquet("ftransfer_lsst_2026-04-10_814386")
-    # Loop over previous DIA-source light curves and append current source:
-    for _idx, row in df.head(5).iterrows():
-        # Python dict
-        source = row["diaSource"]
-        # Nested-Pandas automatically represents nested structure as a DataFrame
-        prv_sources = row["prvDiaSources"]
-        all_sources = pd.concat([prv_sources, pd.DataFrame([source])], ignore_index=True)
-        # Get peak flux per band using Pandas' groupy
-        max_flux_per_band = all_sources[["band", "psfFlux"]].groupby("band").max()
-        # Round values and convert to a Python dict
-        max_flux_dict = max_flux_per_band.round(2).to_dict()["psfFlux"]
-        print(
-            f"diaSourceId {row["diaSource"]["diaSourceId"]}"
-            f" --- Peak PSF Flux {max_flux_dict}"
-        )
+    df["diaSource"].struct.field("diaObjectId")
 
-    diaSourceId 170028494251622421 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 132426.2}
-    diaSourceId 170028491821023256 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 111642.24, 'z': 106307.88}
-    diaSourceId 170028495499427903 --- Peak PSF Flux {'g': 68751.32, 'i': 62620.46, 'r': 58776.86, 'z': 52867.45}
-    diaSourceId 170028500167688200 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 113387.5, 'z': 133318.11}
-    diaSourceId 170028497082777638 --- Peak PSF Flux {'g': 80981.53, 'i': 112783.38, 'r': 112159.72, 'z': 133318.11}
+    0     313761043604045880
+    1     313761043604045880
+                 ...
+    94    314051320305156133
+    95    313761043604045880
+    Name: diaObjectId, Length: 96, dtype: int64[pyarrow]
     ```
 
 === "Polars"
