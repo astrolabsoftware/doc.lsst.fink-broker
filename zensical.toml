@@ -59,7 +59,7 @@ nav = [
         ]},
         { "Livestream" = "services/livestream.md" },
         { "Data Transfer" = "services/data_transfer.md" },
-        # { Xmatch = "" },
+        { "Fink client" = "services/fink_client.md" },
     ]},
   { "Developer corner" = [
       { "Source code" = "source-code.md" },
