@@ -1,14 +1,14 @@
 # Fink client
 
-_date 03/06/2026_
+!!! info "Version 03/06/2026"
+    This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
-This manual has been tested for `fink-client` version 12.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
 ## Purpose
 
 The Fink ecosystem has evolved rapidly in recent years. Initially, in 2020, the fink-client was only a wrapper around the Kafka consumer API to simplify the work of astronomers and other users performing follow-up with the Fink/ZTF Livestream service. In 2023 the client was expanded to support the Data Transfer service, and in 2025 support for the ZTF Xmatch service was added. Neither its core nor its interface changed much during that time.
 
-With the start of LSST, the number of client connections and the need to access additional services grew quickly. For that reason we completely redesigned the CLI and added two more services: bots (an extension of the Livestream) and search (a wrapper around the REST API). We hope you enjoy it!
+With the start of LSST, the number of client connections and the need to access additional services grew quickly. For that reason we completely redesigned the CLI in version 12, and added two more services: bots (an extension of the Livestream) and search (a wrapper around the REST API). We hope you enjoy it!
 
 ## Installation of fink-client
 
@@ -110,7 +110,7 @@ Documentation for polling data from the Livestream with the fink-client is avail
 
 ### How to create a Fink bot for my alert topic?
 
-link to bots
+Documentation for creating and running Fink bots with the fink-client is available in the [Fink bots section](bots.md).
 
 ### How to get information for a particular astronomical object?
 

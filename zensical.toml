@@ -58,6 +58,7 @@ nav = [
           { "Troubleshooting" = "services/api/troubleshooting.md" }
         ]},
         { "Livestream" = "services/livestream.md" },
+        { "Fink bots" = "services/bots.md" },
         { "Data Transfer" = "services/data_transfer.md" },
         { "Fink client" = "services/fink_client.md" },
     ]},

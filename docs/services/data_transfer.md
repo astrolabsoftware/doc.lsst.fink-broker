@@ -1,11 +1,7 @@
 # Fink Data Transfer
 
-_date 03/06/2026_
-
-This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
-
-!!! info "From version 11 to version 12"
-    We recommande to authenticate again. See the [fink-client](fink_client.md) documentation.
+!!! info "Version 03/06/2026"
+    This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}. If you are coming from fink-client version 11, we recommend to authenticate again. See the [fink-client](fink_client.md) documentation.
 
 ## Purpose
 
