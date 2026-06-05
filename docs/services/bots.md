@@ -43,7 +43,11 @@ Assuming you have an account on Telegram, create a bot using BotFather (or re-us
 Then register these parameters on Fink for the topic you want to redirect alerts from:
 
 ```bash
-finkctl topic subscribe -survey lsst -name fink_extragalactic_lt20mag_candidate_lsst -telegram_token <TOKEN> -telegram_channel @channel_name
+finkctl topic subscribe \
+    -survey lsst \
+    -name fink_extragalactic_lt20mag_candidate_lsst \
+    -telegram_token <TOKEN> \
+    -telegram_channel @channel_name
 ```
 
 You can check at any time your configuration per topic using `finkctl auth show -survey lsst`:
@@ -64,3 +68,28 @@ Then make a test by submitting only 1 alert to you channel:
 ```bash
 finkctl stream -survey lsst -limit 1 --telegram
 ```
+
+You should see a cutout and a lightcurve appearing in your channel!
+
+![png](../img/tg_example.png)
+
+
+### Slack
+
+Assuming you have an account on a Slack workspace, the first thing to do is to create a Slack App if you do not have one yet. Visit the Slack App Directory online ([api.slack.com/apps](api.slack.com/apps)) and:
+
+1. Click "Create New App" → select "From scratch"
+2. Enter an app name (e.g., "MessageBot") and select your workspace
+3. Click "Create App"
+
+Then generate a Bot token:
+
+1. In the left sidebar, click "OAuth & Permissions"
+2. Scroll to "Scopes" and add these bot token scopes:
+    1. `chat:write` (post messages)
+    2. `channels:manage` (create channels)
+    3. `channels:read` (list channels)
+3. Scroll up to "OAuth Tokens for Your Workspace" and click "Install to Workspace"
+4. Authorize the app
+5. Copy your Bot User OAuth Token (starts with `xoxb-`)
+

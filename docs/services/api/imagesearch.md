@@ -149,7 +149,7 @@ image.save("mysupercutout.png")
 ```
 
 1. Science, Template, Difference
-2. sigmoid[default], linear, sqrt, power, log
+2. sigmoid\[default\], linear, sqrt, power, log
 3. Valid matplotlib colormap name (see matplotlib.cm). Default is grayscale.
 4. The percentile value used to determine the pixel value of minimum cut level. Default is 0.5. No effect for sigmoid.
 5. The percentile value used to determine the pixel value of maximum cut level. Default is 99.5. No effect for sigmoid.
