@@ -1,7 +1,7 @@
 # Fink client
 
 !!! info "Version 03/06/2026"
-    This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
+    This manual has been tested for `fink-client` version 12.0. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
 
 
 ## Purpose
@@ -30,45 +30,66 @@ You should see the help menu, together with the version of the client.
 
 For some services, such as the Data Transfer and the Livestream, you must register before polling data. Please refer to the "Registration" section in the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client#registration){target="blank_"} GitHub repository. 
 
-## Migration from version 11 to 12
+!!! important "Migration from version 11 to 12"
 
-If you coming from the client version 11, you will need a few changes for the client to work again.
+    If you are coming from the client version 11, you will need a few changes for the client to work again.
 
-### Authentication
+    #### Authentication
 
-We recommend that you run again the authentication as the configuration files slightly changed. For this, just remove your current configuration, and authenticate again:
+    We recommend that you run again the authentication as the configuration files slightly changed. For this, just remove your current configuration, and authenticate again:
 
-```bash
-# backup old configuration
-cp -r ~/.finkclient ~/.finkclient_$(date +%Y%m%d)
+    ```bash
+    # backup old configuration
+    cp -r ~/.finkclient ~/.finkclient_$(date +%Y%m%d)
 
-# Remove old configuration
-rm -r ~/.finkclient
+    # Remove old configuration
+    rm -r ~/.finkclient
 
-# Authenticate again
-finkctl auth register ...
-```
+    # Authenticate again
+    finkctl auth register ...
+    ```
 
-In case you are unsure about the parameters to fill, you can access the documentation by running:
+    In case you are unsure about the parameters to fill, you can access the documentation by running:
 
-```bash
-finkctl auth register
-```
+    ```bash
+    finkctl auth register
+    ```
 
-and you can also display the current configuration by running:
+    and you can also display the current configuration by running:
 
-```bash
-finkctl auth show -survey lsst
-```
+    ```bash
+    finkctl auth show -survey lsst
+    ```
 
-### Commands mapping
+    #### Commands mapping
 
-In version 12, the old commands have been replaced:
+    In version 12, the old commands have been replaced:
 
-- `fink_consumer` --> `finkctl stream`
-- `fink_datatransfer` --> `finkctl transfer`
+    - `fink_client_register` --> `finkctl auth register`
+    - `fink_consumer` --> `finkctl stream`
+    - `fink_datatransfer` --> `finkctl transfer`
 
-Options to these commands remain the same!
+    Options to these commands remain the same!
+
+    #### Subscribe to topics
+
+    The topic management changed a lot with version 12. First, you can easily list the available topics for a survey using:
+
+    ```bash
+    finkctl topic list -survey lsst
+    ```
+
+    Once you identify a topic of interest, just subscribe using:
+
+    ```bash
+    finkctl topic subscribe -survey lsst -name <topic name>
+    ```
+
+    You can check your subscription at any time using:
+
+    ```bash
+    finkctl auth show
+    ```
 
 ## How-to
 
