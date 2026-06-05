@@ -38,7 +38,7 @@ Each app has its own way to register and enable message submission. We detail th
 
 ### Telegram
 
-Assuming you have an account on Telegram, create a bot using BotFather (or re-use one if you already created one) to obtain a token to publish messages. The procedure for creating bots is detailed at https://core.telegram.org/bots/features#creating-a-new-bot. Once you have the token, create a channel to host the alert messages. Give it a meaningful name, add your bot to the channel manually and promote it to admin with post permission. 
+Assuming you have an account on Telegram, create a bot using BotFather (or re-use one if you already created one) to obtain a token to publish messages. The procedure for creating bots is detailed at [https://core.telegram.org/bots/features#creating-a-new-bot :lucide-external-link:](https://core.telegram.org/bots/features#creating-a-new-bot){target="blank_"}. Once you have the token, create a channel to host the alert messages. Give it a meaningful name, add your bot to the channel manually and promote it to admin with post permission. 
 
 Then register these parameters on Fink for the topic you want to redirect alerts from:
 
@@ -47,7 +47,7 @@ finkctl topic subscribe \
     -survey lsst \
     -name fink_extragalactic_lt20mag_candidate_lsst \
     -telegram_token <TOKEN> \
-    -telegram_channel @channel_name
+    -telegram_channel @<channel_name>
 ```
 
 You can check at any time your configuration per topic using `finkctl auth show -survey lsst`:
@@ -73,6 +73,24 @@ You should see a cutout and a lightcurve appearing in your channel!
 
 ![png](../img/tg_example.png)
 
+Then launch the client forever:
+
+```bash
+# put it as daemon and redirect log to telegram.log
+nohup finkctl stream -survey lsst --telegram > telegram.log 2>&1 &
+```
+
+In case you want to stop it:
+
+```bash
+# Assuming you do not have other finkctl processes running
+pkill -f finkctl
+
+# or get the PID for the process
+ps aux | grep finkctl
+# fink      541199  7.2  2.7 1050064 229440 pts/0  Sl   08:45   0:04 python /finkenv/bin/finkctl stream -survey lsst --telegram
+kill 541199
+```
 
 ### Slack
 
@@ -93,3 +111,62 @@ Then generate a Bot token:
 4. Authorize the app
 5. Copy your Bot User OAuth Token (starts with `xoxb-`)
 
+Then create a channel in your Slack workspace, click "Channel details" → select "Open channel details" → select "Integrations" → select "Add apps" and add your app. Then register the parameters on Fink for the topic you want to redirect alerts from:
+
+```bash
+finkctl topic subscribe \
+    -survey lsst \
+    -name fink_extragalactic_lt20mag_candidate_lsst \
+    -slack_token <TOKEN> \
+    -slack_channel <channel_name>
+```
+
+If you already have a Telegram bot associated to this topic, this will not overwrite the Telegram parameters, and add alongside the Slack ones. You can check at any time your configuration per topic using `finkctl auth show -survey lsst`:
+
+```yaml
+...
+survey: lsst
+topics:
+  fink_extragalactic_lt20mag_candidate_lsst:
+    slack:
+      channel: channel_name
+      token: <TOKEN>
+...
+```
+
+Then make a test by submitting only 1 alert to you channel:
+
+```bash
+finkctl stream -survey lsst -limit 1 --slack
+```
+
+You should see a cutout and a lightcurve appearing in your channel!
+
+![png](../img/slack_example.png)
+
+Then launch the client forever:
+
+```bash
+# put it as daemon and redirect log to slack.log
+nohup finkctl stream -survey lsst --slack > slack.log 2>&1 &
+```
+
+In case you want to stop it:
+
+```bash
+# Assuming you do not have other finkctl processes running
+pkill -f finkctl
+
+# or get the PID for the process
+ps aux | grep finkctl
+# fink      541199  7.2  2.7 1050064 229440 pts/0  Sl   08:45   0:04 python /finkenv/bin/finkctl stream -survey lsst --slack
+kill 541199
+```
+
+### Combining channels
+
+You can send alerts to many apps at the same time:
+
+```bash
+finkctl stream -survey lsst -limit 1 --slack --telegram
+```
