@@ -111,11 +111,3 @@ Documentation for polling data from the Livestream with the fink-client is avail
 ### How to create a Fink bot for my alert topic?
 
 Documentation for creating and running Fink bots with the fink-client is available in the [Fink bots section](bots.md).
-
-### How to get information for a particular astronomical object?
-
-example + link to API
-
-### How to get information for a particular Solar System object?
-
-### How to get information for a particular direction on the sky?

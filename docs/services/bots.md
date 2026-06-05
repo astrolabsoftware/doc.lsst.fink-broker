@@ -28,6 +28,7 @@ You should see the help menu, together with the version of the client. Note that
 ## Creating a bot
 
 To create a bot you will need three things:
+
 1. An account on the Fink Livestream (see above)
 2. Write permission for a channel in an instant‑messaging app
 3. Subscription to one or more topics in Fink
@@ -37,6 +38,9 @@ To create a bot you will need three things:
 Each app has its own way to register and enable message submission. We detail the procedure for Telegram and Slack.
 
 ### Telegram
+
+!!! warning "Rate limit"
+    Telegram API rate limits include sending up to 30 messages per second to different chats, 1 message per second to the same chat, and 20 messages per minute in group chats. Exceeding these limits results in a 429 error, indicating "Too Many Requests." (non blocking). We internally added sleeps in the client, but we are improving the solution. 
 
 Assuming you have an account on Telegram, create a bot using BotFather (or re-use one if you already created one) to obtain a token to publish messages. The procedure for creating bots is detailed at [https://core.telegram.org/bots/features#creating-a-new-bot :lucide-external-link:](https://core.telegram.org/bots/features#creating-a-new-bot){target="blank_"}. Once you have the token, create a channel to host the alert messages. Give it a meaningful name, add your bot to the channel manually and promote it to admin with post permission. 
 
@@ -93,6 +97,9 @@ kill 541199
 ```
 
 ### Slack
+
+!!! warning "Rate limit"
+    Slack API rate limits include sending up to 1 message per second. Exceeding this limit results in an error (non blocking) and extra messages will not be displayed. We internally added sleeps in the client, but we are improving the solution.
 
 Assuming you have an account on a Slack workspace, the first thing to do is to create a Slack App if you do not have one yet. Visit the Slack App Directory online ([api.slack.com/apps](api.slack.com/apps)) and:
 
