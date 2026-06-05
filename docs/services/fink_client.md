@@ -30,11 +30,13 @@ You should see the help menu, together with the version of the client.
 
 For some services, such as the Data Transfer and the Livestream, you must register before polling data. Please refer to the "Registration" section in the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client#registration){target="blank_"} GitHub repository. 
 
+## Migration from version 11 to 12
+
 !!! important "Migration from version 11 to 12"
 
     If you are coming from the client version 11, you will need a few changes for the client to work again.
 
-    #### Authentication
+    ### Authentication
 
     We recommend that you run again the authentication as the configuration files slightly changed. For this, just remove your current configuration, and authenticate again:
 
@@ -61,7 +63,7 @@ For some services, such as the Data Transfer and the Livestream, you must regist
     finkctl auth show -survey lsst
     ```
 
-    #### Commands mapping
+    ### Commands mapping
 
     In version 12, the old commands have been replaced:
 
@@ -71,7 +73,7 @@ For some services, such as the Data Transfer and the Livestream, you must regist
 
     Options to these commands remain the same!
 
-    #### Subscribe to topics
+    ### Subscribe to topics
 
     The topic management changed a lot with version 12. First, you can easily list the available topics for a survey using:
 
@@ -88,7 +90,7 @@ For some services, such as the Data Transfer and the Livestream, you must regist
     You can check your subscription at any time using:
 
     ```bash
-    finkctl auth show
+    finkctl auth show -survey lsst
     ```
 
 ## How-to
