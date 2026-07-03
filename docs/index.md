@@ -7,7 +7,7 @@
 
     ---
 
-    [Fink :lucide-external-link:](https://fink-broker.org){target="_blank"} is an astronomical alert broker that serves as an intermediary between alert issuers and the scientific community analyzing the alert data. It provides [services](services/summary.md) designed to assist scientists in efficiently analyzing alert data from telescopes and surveys. It is community-driven, and fully [open-source :lucide-github:](https://github.com/astrolabsoftware){target="_blank"}.
+    [Fink :lucide-external-link:](https://fink-broker.org){target="_blank"} is an astronomical alert broker that serves as an intermediary between alert issuers and the scientific community analyzing the alert data. It provides [services](services/summary.md) designed to assist scientists in efficiently analyzing alert data from telescopes and surveys. It is community-driven, and fully [open-source :lucide-external-link:](https://github.com/astrolabsoftware){target="_blank"}.
 
 -   __What Fink does?__
 
