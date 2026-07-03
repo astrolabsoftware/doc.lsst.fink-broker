@@ -80,7 +80,7 @@ You should see a cutout and a lightcurve appearing in your channel!
 Then launch the client forever:
 
 ```bash
-# put it as daemon and redirect log to telegram.log
+# put it as a background process and redirect log to telegram.log
 nohup finkctl stream -survey lsst --telegram > telegram.log 2>&1 &
 ```
 
@@ -154,7 +154,7 @@ You should see a cutout and a lightcurve appearing in your channel!
 Then launch the client forever:
 
 ```bash
-# put it as daemon and redirect log to slack.log
+# put it as a background process and redirect log to slack.log
 nohup finkctl stream -survey lsst --slack > slack.log 2>&1 &
 ```
 
