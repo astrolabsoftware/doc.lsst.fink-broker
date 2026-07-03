@@ -1,12 +1,7 @@
 # Livestream
 
-_date 24/02/2026_
-
-This manual has been tested for `fink-client` version 10.0. Other versions might work. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
-
-!!! info "From ZTF to LSST"
-    ZTF users need to migrate their fink-client to version 10.0, and authenticate again.
-
+!!! info "Version 03/06/2026"
+    This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}. If you are coming from fink-client version 11, we recommend to authenticate again. See the   [fink-client](fink_client.md) documentation.
 
 ## Purpose
 
@@ -16,35 +11,87 @@ As Kafka can be somehow cumbersome, we developed a client to facilitate the stre
 
 ## Installation of fink-client
 
-To ease the consuming step, the users are recommended to use the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}, which is a wrapper around Apache Kafka. `fink_client` requires a version of Python 3.9+. Documentation to install the client can be found at [https://github.com/astrolabsoftware/fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}. Note that you need to be registered in order to poll data.
+To ease the consuming step, the users are recommended to use the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}. `fink_client` requires a version of Python 3.9+. Documentation to install the client can be found at [services/fink_client](fink_client.md). Note that you need to be registered in order to poll    data. 
 
-For the list of available topics (aka tags), see the schema page [https://lsst.fink-portal.org/schemas :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}.
+## Connecting to a topic
+
+For the list of available topics (aka tags), see the schema page [https://lsst.fink-portal.org/schemas :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}. From version 12, you can also access this list programmatically:
+
+```bash
+finkctl topic list -survey lsst
+```
+
+Choose the topic(s) you want, and register them:
+
+```bash
+finkctl topic subscribe -survey lsst -name fink_extragalactic_lt20mag_candidate_lsst
+```
+
+You should see it in your configuration:
+
+```bash
+finkctl auth show -survey lsst
+```
+```yaml
+...
+survey: lsst
+topics:
+  fink_extragalactic_lt20mag_candidate_lsst:
+    telegram:
+      channel: null
+      token: null
+...
+```
+
+Documentation for topics can be accessed from:
+
+```bash
+finkctl topic
+```
 
 ## First steps: testing the connection
 
 Processed alerts are stored 4 days on our servers, which means if you forget to poll data, you'll be able to retrieve it up to 4 days after emission. This also means on your first connection, you will have 4 days of alert to retrieve. Before you get all of them, let's retrieve the first available alert to check the connection. On a terminal, run the following
 
-```bash
-# access help using `fink_consumer -h`
-fink_consumer -survey lsst --display -limit 1
-```
+=== "version 12"
+    ```bash
+    # access help using `finkctl stream -h`
+    finkctl stream -survey lsst --display -limit 1
+    ```
 
-This will download the first available alert, and print some useful information.  The alert schema is automatically downloaded from the GitHub repo (see the Troubleshooting section if that command does not work). Then the alert is consumed and you'll move to the next alert. Of course, if you want to keep the data, you need to store it. This can be easily done:
+=== "version 11"
+    ```bash
+    # access help using `fink_consumer -h`
+    fink_consumer -survey lsst --display -limit 1
+    ```
 
-```bash
-# create a folder to store alerts
-mkdir alertDB
+This will download the first available alert, and print some useful information.  The alert schema is automatically downloaded from the alert packet. Then the alert is consumed and you'll move to the next alert. Of course, if you want to keep the data, you need to store it. This can be easily done:
 
-# access help using `fink_consumer -h`
-fink_consumer -survey lsst --display --save -outdir alertDB -limit 1
-```
+=== "version 12"
+    ```bash
+    # create a folder to store alerts
+    mkdir alertDB
+
+    finkctl stream -survey lsst --display --save -outdir alertDB -limit 1
+    ```
+=== "version 11"
+    ```bash
+    # create a folder to store alerts
+    mkdir alertDB
+
+    fink_consumer -survey lsst --display --save -outdir alertDB -limit 1
+    ```
 
 This will download the next available alert, display some useful information on screen, and save it (Apache Avro format) on disk. Then if all works, then you can remove the limit, and let the consumer run for ever!
 
-```bash
-# access help using `fink_consumer -h`
-fink_consumer -survey lsst --display --save -outdir alertDB
-```
+=== "version 12"
+    ```bash
+    finkctl stream -survey lsst --display --save -outdir alertDB
+    ```
+=== "version 11"
+    ```bash
+    fink_consumer -survey lsst --display --save -outdir alertDB
+    ```
 
 ## Inspecting alerts
 
@@ -93,7 +140,7 @@ Total for fink_sn_near_galaxy_candidate_lsst              195     280849
 ------------------------------------------------------------------------
 ```
 
-In this example, I have one topic `fink_sn_near_galaxy_candidate_lsst`. Polled alert are in the `Committed` column, remaining alerts in the queue in the `Lag` column.
+In this example, I have one topic `fink_sn_near_galaxy_candidate_lsst`. Polled alerts are in the `Committed` column, remaining alerts in the queue in the `Lag` column.
 
 ### Resetting offsets
 
@@ -123,9 +170,9 @@ No alerts the last 10 seconds
 
 Empty partitions will have `offset=0`, but others will have their offset to the latest one. The client will then wait for new data to come. Note that the reset will be actually triggered on the next poll. Hence the command `fink_consumer --display_statistics` will not right away display the reset offsets. This is particularly useful after a bug in the topic (malformed alerts pushed), and you want a fresh restart.
 
-## Write your own consumer
+## Write your own stream connector
 
-You can write your own consumer to manipulate alerts upon receival by taking inspiration from the [fink_consumer.py :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/blob/master/fink_client/scripts/fink_consumer.py){target="blank_"} script.
+We currently see how to print alerts on the terminal, or save them on disk. We also have a [tutorials to create bots](bots.md) that will redirect alerts on instant message applications such as Telegram or Slack. In case you want another connector (e.g. save data directly into a database), you can easily extend `finkctl` by adding a new handler in `fink_client/handlers.py`. Do not hesitate to reach us if you need assistance.
 
 ## Troubleshooting
 
@@ -154,22 +201,21 @@ IndexError: list index out of range
 
 This error happens when the schema to decode the alert is not matching the alert content. Usually this should not happen (schema is included in the alert payload). In case it happens though, you can force a schema:
 
-```
-fink_consumer [...] -schema [path_to_a_good_schema]
+```bash
+finkctl stream [...] -schema [path_to_a_good_schema]
 ```
 
 In case you do not have replacement schemas, you can save the current (faulty) schema that is contained within an alert packet:
 
 ```bash
-fink_consumer -survey lsst -limit 1 --dump_schema
+finkctl stream -survey lsst -limit 1 --dump_schema
 ```
 
 You will see the traceback above, with the message:
 
-```
+```bash
 Schema saved as schema_2024-06-03T11:12:36.855544+00:00.json
 ```
-
 
 Then you can inspect the schema manually, or open an issue on the fink-client repository by attaching this schema to your message.
 
@@ -181,27 +227,13 @@ If you try to poll the servers and get:
 %3|1634555965.502|FAIL|rdkafka#consumer-1| [thrd:sasl_plaintext://xx.xx.xx.xx:yy/bootstrap]: sasl_plaintext://xx.xx.xx.xx:yy/bootstrap: SASL SCRAM-SHA-512 mechanism handshake failed: Broker: Request not valid in current SASL state: broker's supported mechanisms:  (after 18ms in state AUTH_HANDSHAKE)
 ```
 
-You are likely giving a password when instantiating the consumer. Check your `~/.finkclient/lsst_credentials.yml`, it should contain
+You are likely giving a password when instantiating the consumer. Check your conf:
 
-```yml
-password: null
+```bash
+finkctl auth show -survey lsst
 ```
 
-or directly in your code:
-
-```python
-# myconfig is a dict that should NOT have
-# a 'password' key set
-consumer = AlertConsumer(mytopics, myconfig)
-```
-
-However, if you want the old behaviour, then you need to specify it using `sasl.*` parameters:
-
-```python
-myconfig["sasl.username"] = "your_username"
-myconfig["sasl.password"] = None
-consumer = AlertConsumer(mytopics, myconfig)
-```
+it should not contain any entry called `password:`.
 
 ### Timeout error
 
@@ -211,3 +243,5 @@ If you get frequent timeouts while you know there are alerts to poll, try to inc
 # edit ~/.finkclient/lsst_credentials.yml
 maxtimeout: 30
 ```
+
+In some cases (sorry Australia!), you might even increase it to 120 seconds...We are working on it to reduce these latencies.

@@ -1,11 +1,7 @@
 # Fink Data Transfer
 
-_date 16/04/2026_
-
-This manual has been tested for `fink-client` version 11.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}.
-
-!!! info "From ZTF to LSST"
-    ZTF users need to migrate their fink-client to at least version 10.0, and authenticate again.
+!!! info "Version 03/06/2026"
+    This manual has been tested for `fink-client` version 12.0 and Fink/LSST Portal 1.2. In case of trouble, send us an email (contact@fink-broker.org) or [open an issue :lucide-external-link:](https://github.com/astrolabsoftware/fink-client/issues){target="blank_"}. If you are coming from fink-client version 11, we recommend to authenticate again. See the [fink-client](fink_client.md) documentation.
 
 ## Purpose
 
@@ -35,7 +31,7 @@ We decided to _stream_ the output of each job. In practice, this means that the 
 
 ## Installation of fink-client
 
-To ease the consuming step, the users are recommended to use the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}, which is a wrapper around Apache Kafka. `fink_client` requires a version of Python 3.9+. Documentation to install the client can be found at [services/fink_client](../developers/fink_client.md). Note that you need to be registered in order to poll data.
+To ease the consuming step, the users are recommended to use the [fink-client :lucide-external-link:](https://github.com/astrolabsoftware/fink-client){target="blank_"}. `fink_client` requires a version of Python 3.9+. Documentation to install the client can be found at [services/fink_client](fink_client.md). Note that you need to be registered in order to poll data.
 
 ## Defining your query
 
@@ -145,14 +141,25 @@ On the submission web page, when you read the message:
 
 this means you can already start polling the data on your computer. You will then invoke for example (see the command on the right panel):
 
-```bash
-fink_datatransfer \
-    -survey lsst \
-    -topic ftransfer_lsst_2026-02-24_34995 \
-    -outdir ftransfer_lsst_2026-02-24_34995 \
-    --dump_schemas \
-    --verbose
-```
+=== "version 12"
+    ```bash
+    finkctl transfer \
+        -survey lsst \
+        -topic ftransfer_lsst_2026-02-24_34995 \
+        -outdir ftransfer_lsst_2026-02-24_34995 \
+        --dump_schemas \
+        --verbose
+    ```
+
+=== "version 11"
+    ```bash
+    fink_datatransfer \
+        -survey lsst \
+        -topic ftransfer_lsst_2026-02-24_34995 \
+        -outdir ftransfer_lsst_2026-02-24_34995 \
+        --dump_schemas \
+        --verbose
+    ```
 
 Alert data will be consumed and stored on disk as parquet files. You can easily read these alerts using PyArrow, or Pandas: 
 
@@ -200,16 +207,29 @@ Alert data will be consumed and stored on disk as parquet files. You can easily 
 
 You can stop the poll by hitting `CTRL+C` on your keyboard, and resume later. The poll will restart from the last offset, namely you will not have duplicate. In case you want to start polling data from the beginning of the stream, you can use the `--restart_from_beginning` option:
 
-```bash
-# Make sure <output directory> is empty or does not
-# exist to avoid duplicates.
-fink_datatransfer \
-    -topic <topic name> \
-    -survey lsst \
-    -outdir <output directory> \
-    --verbose \
-    --restart_from_beginning
-```
+=== "version 12"
+    ```bash
+    # Make sure <output directory> is empty or does not
+    # exist to avoid duplicates.
+    finkctl transfer \
+        -topic <topic name> \
+        -survey lsst \
+        -outdir <output directory> \
+        --verbose \
+        --restart_from_beginning
+    ```
+
+=== "version 11"
+    ```bash
+    # Make sure <output directory> is empty or does not
+    # exist to avoid duplicates.
+    fink_datatransfer \
+        -topic <topic name> \
+        -survey lsst \
+        -outdir <output directory> \
+        --verbose \
+        --restart_from_beginning
+    ```
 
 Finally you can inspect the schemas of the alerts using the option `--dump_schemas`. This option will produce two files on disk: one json file for the Avro schema (`avro_schema_*.json`), and one metadata file for the Arrow schema (`arrow_schema_*.metadata`) 
 
@@ -237,15 +257,27 @@ arrow_schema = pq.read_schema("arrow_schema_ftransfer_lsst_2026-03-27_300346.met
 
 By default, the client will produce Parquet files. For version < 11, those files had issues with data type. While this has been corrected in version 11, we now also give the possibility to directly write data in Avro, that is without performing any conversion under the hood (Fink manipulates Avro). Simply specify the argument `--outformat avro`:
 
-```bash
-fink_datatransfer \
-    -survey lsst \
-    -topic ftransfer_lsst_2026-02-24_34995 \
-    -outdir ftransfer_lsst_2026-02-24_34995 \
-    --dump_schemas \
-    -outformat avro \
-    --verbose
-```
+=== "version 12"
+    ```bash
+    finkctl transfer \
+        -survey lsst \
+        -topic ftransfer_lsst_2026-02-24_34995 \
+        -outdir ftransfer_lsst_2026-02-24_34995 \
+        --dump_schemas \
+        -outformat avro \
+        --verbose
+    ```
+
+=== "version 11"
+    ```bash
+    fink_datatransfer \
+        -survey lsst \
+        -topic ftransfer_lsst_2026-02-24_34995 \
+        -outdir ftransfer_lsst_2026-02-24_34995 \
+        --dump_schemas \
+        -outformat avro \
+        --verbose
+    ```
 
 You can easily read data using Polars, or alternatively the client provides simple tools to read Avro file if you do not have a reader available:
 
@@ -295,7 +327,7 @@ for _idx, row in df.head(5).iterrows():
     # Round values and convert to a Python dict
     max_flux_dict = max_flux_per_band.round(2).to_dict()["psfFlux"]
     print(
-        f"diaSourceId {row["diaSource"]["diaSourceId"]}"
+        f"diaSourceId {row['diaSource']['diaSourceId']}"
         f" --- Peak PSF Flux {max_flux_dict}"
     )
 ```
@@ -315,7 +347,7 @@ import nested_pandas as npd
 df = npd.read_parquet(
     "ftransfer_lsst_2026-04-10_814386",
     # Just load the source information to save time and memory
-    columns=["diaSource"]
+    columns=["diaSource"],
 )
 # Unnest the only diaSource column to get all its fields as top-level columns
 # Uses standard Pandas `.struct` "accessor"
@@ -335,10 +367,13 @@ nf = npd.NestedFrame.from_flat(
 nf = nf.query("sources.psfFlux / sources.psfFluxErr > 10")
 # Convert fluxes to magnitudes
 nf["sources.psfMag"] = 31.4 - 2.5 * np.log10(nf["sources.psfFlux"])
-nf["sources.psfMagErr"] = 2.5 / np.log(10) * nf["sources.psfFluxErr"] / nf["sources.psfFlux"]
+nf["sources.psfMagErr"] = (
+    2.5 / np.log(10) * nf["sources.psfFluxErr"] / nf["sources.psfFlux"]
+)
 
 # Sort by date
 nf = nf.sort_values("sources.midpointMjdTai")
+
 
 # Get the largest magnitude slope between two consecutive sources
 def max_mag_slope(row):
@@ -351,7 +386,8 @@ def max_mag_slope(row):
     relaxed_diff_mag = diff_mag - pairwise_magerr_sums
     slopes = relaxed_diff_mag / diff_time
     return np.max(slopes)
-    
+
+
 # Run user function over rows, r-band only
 nf = nf.query("sources.band == 'r'").map_rows(
     max_mag_slope,
@@ -377,16 +413,29 @@ By using this strategy, the service is able to simultaneously access different p
 
 By default, the client will use all available logical CPUs. You can also specify the number of CPUs to use, as well as the batch size from the command line:
 
-```bash
-fink_datatransfer \
-    -topic <topic name> \
-    -outdir <output directory> \
-    -survey lsst \
-    -nconsumers 5 \
-    -batchsize 1000 \
-    --dump_schemas \
-    --verbose
-```
+=== "version 12"
+    ```bash
+    finkctl transfer \
+        -topic <topic name> \
+        -outdir <output directory> \
+        -survey lsst \
+        -nconsumers 5 \
+        -batchsize 1000 \
+        --dump_schemas \
+        --verbose
+    ```
+
+=== "version 11"
+    ```bash
+    fink_datatransfer \
+        -topic <topic name> \
+        -outdir <output directory> \
+        -survey lsst \
+        -nconsumers 5 \
+        -batchsize 1000 \
+        --dump_schemas \
+        --verbose
+    ```
 
 More details on the expected performances are given in this [post :lucide-external-link:](https://fink-broker.org/news/2023-01-17-data-transfer/).
 
