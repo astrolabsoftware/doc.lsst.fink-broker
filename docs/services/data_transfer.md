@@ -295,7 +295,7 @@ for _idx, row in df.head(5).iterrows():
     # Round values and convert to a Python dict
     max_flux_dict = max_flux_per_band.round(2).to_dict()["psfFlux"]
     print(
-        f"diaSourceId {row["diaSource"]["diaSourceId"]}"
+        f"diaSourceId {row['diaSource']['diaSourceId']}"
         f" --- Peak PSF Flux {max_flux_dict}"
     )
 ```
@@ -315,7 +315,7 @@ import nested_pandas as npd
 df = npd.read_parquet(
     "ftransfer_lsst_2026-04-10_814386",
     # Just load the source information to save time and memory
-    columns=["diaSource"]
+    columns=["diaSource"],
 )
 # Unnest the only diaSource column to get all its fields as top-level columns
 # Uses standard Pandas `.struct` "accessor"
@@ -335,10 +335,13 @@ nf = npd.NestedFrame.from_flat(
 nf = nf.query("sources.psfFlux / sources.psfFluxErr > 10")
 # Convert fluxes to magnitudes
 nf["sources.psfMag"] = 31.4 - 2.5 * np.log10(nf["sources.psfFlux"])
-nf["sources.psfMagErr"] = 2.5 / np.log(10) * nf["sources.psfFluxErr"] / nf["sources.psfFlux"]
+nf["sources.psfMagErr"] = (
+    2.5 / np.log(10) * nf["sources.psfFluxErr"] / nf["sources.psfFlux"]
+)
 
 # Sort by date
 nf = nf.sort_values("sources.midpointMjdTai")
+
 
 # Get the largest magnitude slope between two consecutive sources
 def max_mag_slope(row):
@@ -351,7 +354,8 @@ def max_mag_slope(row):
     relaxed_diff_mag = diff_mag - pairwise_magerr_sums
     slopes = relaxed_diff_mag / diff_time
     return np.max(slopes)
-    
+
+
 # Run user function over rows, r-band only
 nf = nf.query("sources.band == 'r'").map_rows(
     max_mag_slope,
