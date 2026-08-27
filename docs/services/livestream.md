@@ -121,7 +121,7 @@ r.to_pandas()
 You might want to check where you are on the different queues, that is retrieving the offsets for each topic that you are polling:
 
 ```bash
-fink_consumer -survey lsst --display_statistics
+finkctl stream -survey lsst --display_statistics
 
 Topic [Partition]                                   Committed        Lag
 ========================================================================
@@ -147,7 +147,7 @@ In this example, I have one topic `fink_sn_near_galaxy_candidate_lsst`. Polled a
 Sometimes you might want to poll again alerts, that is restarting to poll from the beginning of a queue. For this, you can use:
 
 ```bash
-fink_consumer -survey lsst --display -start_at earliest
+finkctl stream -survey lsst --display -start_at earliest
 Resetting offsets to BEGINNING
 ...
 assign TopicPartition{topic=fink_sn_near_galaxy_candidate_lsst,partition=0,offset=0,leader_epoch=None,error=None}
@@ -158,7 +158,7 @@ assign TopicPartition{topic=fink_sn_near_galaxy_candidate_lsst,partition=0,offse
 All your topic partitions will be reset to the starting offset (`0` in this case). Similarly, you can empty all topics, and restarting polling from the last offset:
 
 ```bash
-fink_consumer --display -start_at latest
+finkctl stream -survey lsst --display -start_at latest
 ...
 assign TopicPartition{topic=fink_sn_near_galaxy_candidate_lsst,partition=0,offset=0,leader_epoch=None,error=None}
 ...
@@ -168,7 +168,7 @@ No alerts the last 10 seconds
 ...
 ```
 
-Empty partitions will have `offset=0`, but others will have their offset to the latest one. The client will then wait for new data to come. Note that the reset will be actually triggered on the next poll. Hence the command `fink_consumer --display_statistics` will not right away display the reset offsets. This is particularly useful after a bug in the topic (malformed alerts pushed), and you want a fresh restart.
+Empty partitions will have `offset=0`, but others will have their offset to the latest one. The client will then wait for new data to come. Note that the reset will be actually triggered on the next poll. Hence the command `finkctl stream --display_statistics` will not right away display the reset offsets. This is particularly useful after a bug in the topic (malformed alerts pushed), and you want a fresh restart.
 
 ## Write your own stream connector
 
