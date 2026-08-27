@@ -9,7 +9,7 @@
 Install zensical on your computer:
 
 ```bash
-pip install zensical
+pip install -r docs/requirements.txt
 ```
 
 open a branch, edit files, and check locally the modifications:

@@ -73,7 +73,7 @@ Note that in case of several objects matching, the results will be sorted accord
     import pandas as pd
 
     # Get all objects falling within (center, radius) = ((ra, dec), radius)
-    # between 2025-12-10 05:59:37.000 (included) and 2025-12-17 05:59:37.000 (excluded)
+    # between 2025-12-10 05:59:37.000 (included) and 2025-12-17 05:59:37.000 (included)
     r = requests.post(
         "https://api.lsst.fink-portal.org/api/v1/conesearch",
         json={
@@ -81,7 +81,9 @@ Note that in case of several objects matching, the results will be sorted accord
             "dec": "-44.635",
             "radius": "150",
             "startdate": "2025-12-10 05:59:37.000",
-            "window": 7,  # in days
+            "stopdate": "2025-12-17 05:59:37.000",  # equivalently expressed in days "window": 7
+            "kind": "within",
+            "columns": "r:diaObjectId,r:midpointMjdTai,r:psfFlux,r:psfFluxErr,f:firstDiaSourceMjdTaiFink",
         },
     )
 
@@ -89,10 +91,26 @@ Note that in case of several objects matching, the results will be sorted accord
     pdf = pd.read_json(io.BytesIO(r.content))
     ```
 
-Instead of `window`, you can also use `stopdate`.
+The parameter `kind` defines the time filtering strategy. `kind=within` will return transients that strictly vary within the bounds. `kind=across` means all transients that had varied inside the bounds (but could also vary before/after). All other parameters remain the same. See below for graphical explanations that would hopefully drive the writing of the query.
 
-!!! warning "Time boundaries and first detection"
-    When specifying time boundaries, you will restrict the search to alerts whose first detection was within the specified range of dates (and not all transients seen during this period).
+### Filtering by boundaries
+
+If the user specifies both `startdate` and `stopdate` (or `window`), depending on `kind`, here is what you should expect (green=the object is returned, red=the object is not returned):
+
+<img width="1085" height="677" alt="image" src="https://github.com/user-attachments/assets/2ddfe532-1876-44fc-ba44-4f1dfa81724a" />
+
+### Filtering by startdate
+
+If the user specifies `startdate`, depending on `kind`, here is what you should expect (green=the object is returned, red=the object is not returned):
+
+<img width="1085" height="677" alt="image" src="https://github.com/user-attachments/assets/6d3060b8-0971-4ef0-ba17-a61f7928cb2e" />
+
+### Filtering by stopdate
+
+If the user specifies `stopdate`, depending on `kind`, here is what you should expect (green=the object is returned, red=the object is not returned):
+
+<img width="1085" height="677" alt="image" src="https://github.com/user-attachments/assets/8873c275-7db7-4673-a2f8-d20bf5c5491b" />
+
 
 ## Retrieving full object data
 
