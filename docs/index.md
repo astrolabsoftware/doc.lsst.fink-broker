@@ -21,8 +21,6 @@
     ---
 
     There are a lot of [contributors :lucide-external-link:](https://fink-broker.org/members/){target="_blank"}! And there are rooms for everybody. You can join using this [form :lucide-external-link:](https://forms.gle/CmvH8vsyyv4AUTpy8){target="_blank"}, or alternatively contact us at contact(at)fink-broker.org, and we will get in touch with you.
-    <!-- [Join us :lucide-external-link:](https://fink-broker.org/members/){ target="_blank" .md-button .btn-index2 } -->
-
 
 -   __How to contribute to Fink?__
 

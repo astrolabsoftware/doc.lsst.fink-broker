@@ -58,8 +58,9 @@ nav = [
           { "Troubleshooting" = "services/api/troubleshooting.md" }
         ]},
         { "Livestream" = "services/livestream.md" },
+        { "Fink bots" = "services/bots.md" },
         { "Data Transfer" = "services/data_transfer.md" },
-        # { Xmatch = "" },
+        { "Fink client" = "services/fink_client.md" },
     ]},
   { "Developer corner" = [
       { "Source code" = "source-code.md" },
