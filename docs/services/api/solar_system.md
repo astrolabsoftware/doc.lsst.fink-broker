@@ -152,25 +152,6 @@ Note that you can also choose different output format:
     vt = votable.parse(io.BytesIO(r.content))
     ```
 
-## Object data
-
-The endpoint `TBD` give access to summary information about an object, such as the orbital parameters, the number of alerts for the object, number of oppositions, etc. You would simply use:
-
-
-```python title="Object summary information"
-import requests
-
-# get summary data for 2015 BC557
-r = requests.post(
-    "https://api.lsst.fink-portal.org/TBD",
-    json={"n_or_d": "2015 BC557", "output-format": "json"},
-)
-
-if r.status_code == 200:
-    # dictionary with object properties
-    properties = r.json()[0]
-```
-
 ## Adding ephemerides from Miriade
 
 !!! warning "Limitations"
