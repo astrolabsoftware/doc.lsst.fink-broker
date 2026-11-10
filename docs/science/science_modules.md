@@ -22,7 +22,7 @@ The science modules are provided by the scientific community and they focus on a
 
 The schema associated to Fink/Rubin processed alerts can be found on the [Portal :lucide-external-link:](https://lsst.fink-portal.org/schemas){target="blank_"}. To summarize, the outputs are organised in 3 categories:
 
-- `xm.*`: outputs from catalog crossmatches (SIMBAD, Gaia DR3, Legacy Survey DR8, VSX, ...). If the catalogs are available at CDS, we can integrate them directly. For external catalogs, depending on their size, we can consider hosting them ourselves.
+- `xm.*`: outputs from catalog crossmatches (SIMBAD, Gaia DR3, Legacy Survey DR8, GCVS, VSX, TNS, 3HSP, 4LAC, SPICY, Mangrove, Milliquas). If the catalogs are available at CDS, we can integrate them directly. For external catalogs, depending on their size, we can consider hosting them ourselves.
 - `clf.*`: outputs from classifiers. Users can upload pre-trained models, and each alert will receive a score. There are binary models focusing on specific class of transients (e.g. SN Ia vs the rest of the world), or broad classifiers that output a vector of probabilities for a variety of classes.
 - `lc_features.<band>.*`: lightcurve features from SNAD. 26 features per filter band.
 - `misc.*`: outputs that are neither crossmatches, classifiers, or lightcurve features from SNAD. These modules typically issue flags, statistical fit results, or aggregated information.
